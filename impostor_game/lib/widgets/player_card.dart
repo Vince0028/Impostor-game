@@ -72,9 +72,9 @@ class _PlayerCardState extends State<PlayerCard>
         return Transform.scale(scale: _scaleAnimation.value, child: child);
       },
       child: GestureDetector(
-        onLongPressStart: (_) => _onHoldStart(),
-        onLongPressEnd: (_) => _onHoldEnd(),
-        onLongPressCancel: () => _onHoldEnd(),
+        onTapDown: (_) => _onHoldStart(),
+        onTapUp: (_) => _onHoldEnd(),
+        onTapCancel: () => _onHoldEnd(),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           decoration: BoxDecoration(
@@ -89,7 +89,7 @@ class _PlayerCardState extends State<PlayerCard>
             ],
             border: Border.all(color: Colors.white.withOpacity(0.1), width: 1),
           ),
-          child: _isRevealed || widget.player.hasSeenCard
+          child: _isRevealed
               ? _buildRevealedContent(isImposter)
               : _buildHiddenContent(),
         ),
@@ -119,21 +119,32 @@ class _PlayerCardState extends State<PlayerCard>
 
           // Hold indicator
           AnimatedOpacity(
-            opacity: _isHolding ? 0.5 : 1.0,
+            opacity: _isHolding ? 1.0 : 0.6, // Pulse/Highlight when holding
             duration: const Duration(milliseconds: 200),
             child: Column(
               children: [
-                Icon(
-                  Icons
-                      .fingerprint, // Changed icon to fingerprint for spy theme
-                  size: 64,
-                  color: AppTheme.textPrimary.withOpacity(0.8),
+                ScaleTransition(
+                  scale: Tween<double>(begin: 1.0, end: 1.2).animate(
+                    CurvedAnimation(
+                      parent: _animationController,
+                      curve: Curves.easeInOut,
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.fingerprint,
+                    size: 80, // Slightly larger
+                    color: _isHolding
+                        ? Colors.white
+                        : AppTheme.textPrimary.withOpacity(0.8),
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'SCAN TO REVEAL', // Changed text
+                  _isHolding ? 'SCANNING...' : 'HOLD TO REVEAL',
                   style: AppTheme.labelLarge.copyWith(
-                    color: AppTheme.textPrimary.withOpacity(0.8),
+                    color: _isHolding
+                        ? Colors.white
+                        : AppTheme.textPrimary.withOpacity(0.8),
                     letterSpacing: 2,
                   ),
                 ),
@@ -248,14 +259,13 @@ class _PlayerCardState extends State<PlayerCard>
 
             const SizedBox(height: 32),
 
-            // Instructions
+            // Instructions - Release to Hide
             Text(
-              isImposter
-                  ? 'Blend in. Deceive. Survive.'
-                  : 'Memorize the code. Identify the spy.',
-              style: AppTheme.bodyMedium.copyWith(
-                color: AppTheme.textPrimary.withOpacity(0.8),
-                fontSize: 16,
+              'RELEASE TO HIDE', // Updated instruction
+              style: AppTheme.labelLarge.copyWith(
+                color: AppTheme.textSecondary,
+                fontSize: 14,
+                letterSpacing: 1.5,
               ),
               textAlign: TextAlign.center,
             ),
@@ -271,8 +281,8 @@ class _PlayerCardState extends State<PlayerCard>
     });
     _animationController.forward();
 
-    // Reveal after 500ms of holding
-    Future.delayed(const Duration(milliseconds: 500), () {
+    // Reveal after 1 second (simulating scan)
+    Future.delayed(const Duration(milliseconds: 1000), () {
       if (_isHolding && mounted) {
         setState(() {
           _isRevealed = true;
@@ -285,6 +295,7 @@ class _PlayerCardState extends State<PlayerCard>
   void _onHoldEnd() {
     setState(() {
       _isHolding = false;
+      _isRevealed = false; // Hide content when released
     });
     _animationController.reverse();
   }

@@ -28,15 +28,12 @@ class _EditPlayersDialogState extends State<EditPlayersDialog> {
     return Consumer<GameProvider>(
       builder: (context, provider, _) {
         return Container(
-          margin: EdgeInsets.only(
-            top: MediaQuery.of(context).size.height * 0.2,
-          ),
+          height: MediaQuery.of(context).size.height * 0.85,
           decoration: const BoxDecoration(
             color: AppTheme.backgroundCard,
             borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           ),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
               // Handle
               Container(
@@ -81,9 +78,8 @@ class _EditPlayersDialogState extends State<EditPlayersDialog> {
               ),
 
               // Player List
-              Flexible(
+              Expanded(
                 child: ListView.builder(
-                  shrinkWrap: true,
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   itemCount: provider.players.length,
                   itemBuilder: (context, index) {
@@ -148,82 +144,92 @@ class _EditPlayersDialogState extends State<EditPlayersDialog> {
                 ),
               ),
 
-              // Add Player
-              if (provider.players.length < 20)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: AppTheme.textSecondary.withOpacity(0.5),
-                        style: BorderStyle.solid,
-                      ),
-                      color: AppTheme.backgroundSurface.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: _newPlayerController,
-                            decoration: InputDecoration(
-                              hintText: 'New Agent Code Name',
-                              hintStyle: AppTheme.bodyMedium.copyWith(
-                                color: AppTheme.textHint,
-                              ),
-                              border: InputBorder.none,
-                            ),
-                            style: const TextStyle(color: Colors.white),
-                            onSubmitted: (_) => _addPlayer(provider),
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () => _addPlayer(provider),
-                          icon: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: AppTheme.primaryNeon,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.add,
-                              color: Colors.black,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-              // Confirm Button
+              // Bottom Section (Add Player + Confirm)
+              // Ensure this stays visible above keyboard
               Padding(
-                padding: const EdgeInsets.all(24),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.primaryNeon,
-                      foregroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                padding: EdgeInsets.only(
+                  left: 24,
+                  right: 24,
+                  top: 16,
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Add Player
+                    if (provider.players.length < 20)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        margin: const EdgeInsets.only(bottom: 16),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppTheme.textSecondary.withOpacity(0.5),
+                            style: BorderStyle.solid,
+                          ),
+                          color: AppTheme.backgroundSurface.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: _newPlayerController,
+                                decoration: InputDecoration(
+                                  hintText: 'New Agent Code Name',
+                                  hintStyle: AppTheme.bodyMedium.copyWith(
+                                    color: AppTheme.textHint,
+                                  ),
+                                  border: InputBorder.none,
+                                ),
+                                style: const TextStyle(color: Colors.white),
+                                onSubmitted: (_) => _addPlayer(provider),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () => _addPlayer(provider),
+                              icon: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.primaryNeon,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.add,
+                                  color: Colors.black,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      elevation: 4,
-                      shadowColor: AppTheme.primaryNeon.withOpacity(0.4),
-                    ),
-                    child: const Text(
-                      'CONFIRM ROSTER',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1,
+
+                    // Confirm Button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: ElevatedButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.primaryNeon,
+                          foregroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 4,
+                          shadowColor: AppTheme.primaryNeon.withOpacity(0.4),
+                        ),
+                        child: const Text(
+                          'CONFIRM ROSTER',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ],

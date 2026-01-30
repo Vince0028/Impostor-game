@@ -7,7 +7,7 @@
             "type": "dart",
             "flutterMode": "debug",
             "cwd": "${workspaceFolder}/impostor_game",
-            "program": "lib/main.dart"
+            "program": "${workspaceFolder}/impostor_game/lib/main.dart"
         },
         {
             "name": "Incognito Game (Profile)",
@@ -15,7 +15,7 @@
             "type": "dart",
             "flutterMode": "profile",
             "cwd": "${workspaceFolder}/impostor_game",
-            "program": "lib/main.dart"
+            "program": "${workspaceFolder}/impostor_game/lib/main.dart"
         },
         {
             "name": "Incognito Game (Release)",
@@ -23,7 +23,7 @@
             "type": "dart",
             "flutterMode": "release",
             "cwd": "${workspaceFolder}/impostor_game",
-            "program": "lib/main.dart"
+            "program": "${workspaceFolder}/impostor_game/lib/main.dart"
         }
     ]
 }
