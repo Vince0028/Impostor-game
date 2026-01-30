@@ -7,7 +7,8 @@ class HowToPlayDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      backgroundColor: AppTheme.backgroundSurface,
       child: Container(
         constraints: const BoxConstraints(maxWidth: 400),
         padding: const EdgeInsets.all(24),
@@ -20,64 +21,63 @@ class HowToPlayDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'How to Play',
+                  'Mission Briefing',
                   style: AppTheme.titleMedium.copyWith(
                     fontWeight: FontWeight.bold,
+                    color: AppTheme.primaryNeon,
                   ),
                 ),
                 IconButton(
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.close),
+                  color: AppTheme.textSecondary,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
 
             // Steps
             _buildStep(
               1,
-              'Gather 3-5 friends and pass the phone around.',
-              AppTheme.imposterRed,
+              'Get 3-5 friends together and pass the device around.',
+              AppTheme.cardCyan,
             ),
             const SizedBox(height: 16),
             _buildStep(
               2,
-              'Each player swipes to see the secret word — except one person, who will see "Imposter."',
-              AppTheme.imposterRed,
+              'Everyone sees the secret word, but one person sees "INCOGNITO".',
+              AppTheme.cardPurple,
             ),
             const SizedBox(height: 16),
             _buildStep(
               3,
-              'One by one, players say a word related to the secret word.',
-              AppTheme.imposterRed,
+              'Take turns saying a word related to the secret topic.',
+              AppTheme.cardPink,
             ),
             const SizedBox(height: 16),
             _buildStep(
               4,
-              'The imposter must fake it and try to blend in without knowing the word.',
-              AppTheme.imposterRed,
+              'If you are Incognito, blend in! Don\'t get caught.',
+              AppTheme.cardOrange,
             ),
             const SizedBox(height: 16),
             _buildStep(
               5,
-              'Keep giving clues and talking until someone thinks they\'ve figured it out.',
-              AppTheme.imposterRed,
-            ),
-            const SizedBox(height: 16),
-            _buildStep(
-              6,
-              'When you\'re ready, vote for who you think the imposter is — then tap to reveal the truth!',
-              AppTheme.imposterRed,
+              'Vote for who you suspect. Uncover the truth!',
+              AppTheme.alertColor,
             ),
 
             const SizedBox(height: 24),
 
             // Footer
             Text(
-              '* Record the chaos! Share your funniest rounds on social media and tag your friends.',
-              style: AppTheme.bodySmall.copyWith(fontStyle: FontStyle.italic),
+              '// TIP: Act confident. Hesitation reveals the spy.',
+              style: AppTheme.bodySmall.copyWith(
+                fontStyle: FontStyle.italic,
+                color: AppTheme.textHint,
+              ),
             ),
           ],
         ),
@@ -89,16 +89,29 @@ class HowToPlayDialog extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          '$number',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: numberColor,
+        Container(
+          width: 28,
+          height: 28,
+          decoration: BoxDecoration(
+            color: numberColor.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: numberColor),
+          ),
+          child: Center(
+            child: Text(
+              '$number',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: numberColor,
+              ),
+            ),
           ),
         ),
-        const SizedBox(width: 12),
-        Expanded(child: Text(text, style: AppTheme.bodyLarge)),
+        const SizedBox(width: 14),
+        Expanded(
+          child: Text(text, style: AppTheme.bodyLarge.copyWith(height: 1.3)),
+        ),
       ],
     );
   }

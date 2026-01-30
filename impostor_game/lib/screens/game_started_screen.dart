@@ -15,7 +15,7 @@ class GameStartedScreen extends StatelessWidget {
         final startingPlayer = provider.getStartingPlayer();
 
         return Scaffold(
-          backgroundColor: AppTheme.backgroundLight,
+          backgroundColor: AppTheme.backgroundDark,
           body: SafeArea(
             child: Column(
               children: [
@@ -30,108 +30,109 @@ class GameStartedScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        'Game started! Time to talk and catch the imposter.',
+                        'MISSION ACTIVE',
+                        style: AppTheme.labelLarge.copyWith(
+                          fontSize: 18,
+                          letterSpacing: 4,
+                          color: AppTheme.alertColor,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Interrogate agents.\nIdentify the spy.',
                         style: AppTheme.titleMedium.copyWith(
-                          fontSize: 26,
+                          fontSize: 32,
                           fontWeight: FontWeight.bold,
-                          height: 1.3,
+                          height: 1.2,
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 16),
-                      RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          style: AppTheme.bodyLarge,
-                          children: [
-                            WidgetSpan(
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppTheme.primaryGreen,
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: Text(
-                                  startingPlayer.name,
-                                  style: AppTheme.bodyLarge.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                      const SizedBox(height: 32),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 16,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppTheme.backgroundSurface,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: AppTheme.primaryNeon.withOpacity(0.3),
+                          ),
+                        ),
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            style: AppTheme.bodyLarge,
+                            children: [
+                              TextSpan(
+                                text: startingPlayer.name,
+                                style: AppTheme.bodyLarge.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppTheme.primaryNeon,
+                                  fontSize: 20,
                                 ),
                               ),
-                            ),
-                            const TextSpan(text: ' starts the conversation!'),
-                          ],
+                              const TextSpan(
+                                text: '\nstarts the interrogation.',
+                                style: TextStyle(
+                                  height: 1.5,
+                                  color: AppTheme.textSecondary,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
 
-                const SizedBox(height: 40),
+                const Spacer(),
 
-                // Recording Section
+                // Recording Section (Simplified or removed? Kept but styled)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF616161),
+                      color: AppTheme.backgroundSurface,
                       borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Colors.white.withOpacity(0.05)),
                     ),
-                    child: Column(
+                    child: Row(
                       children: [
-                        const Icon(
-                          Icons.videocam_outlined,
-                          color: Colors.white,
-                          size: 32,
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          'RECORD YOUR MOMENTS',
-                          style: AppTheme.labelLarge.copyWith(
-                            color: Colors.white,
-                            letterSpacing: 1,
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.red.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Icon(
+                            Icons.fiber_manual_record,
+                            color: Colors.red,
+                            size: 24,
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Record your funniest moments and share the madness — who knows, you might go viral.',
-                          style: AppTheme.bodyMedium.copyWith(
-                            color: Colors.white.withValues(alpha: 0.8),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'Use your phone\'s screen recorder!',
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'SURVEILLANCE',
+                                style: AppTheme.labelLarge.copyWith(
+                                  fontSize: 12,
                                 ),
                               ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFF6B6B),
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 32,
-                              vertical: 14,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                          ),
-                          child: const Text(
-                            'START RECORDING',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 0.5,
-                            ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'Record the session for evidence.',
+                                style: AppTheme.bodyMedium.copyWith(
+                                  color: AppTheme.textSecondary,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -139,31 +140,31 @@ class GameStartedScreen extends StatelessWidget {
                   ),
                 ),
 
-                const Spacer(),
+                const SizedBox(height: 32),
 
                 // Reveal Button
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: SizedBox(
                     width: double.infinity,
-                    child: OutlinedButton(
+                    height: 56,
+                    child: ElevatedButton(
                       onPressed: () => _showReveal(context),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppTheme.textPrimary,
-                        side: const BorderSide(
-                          color: AppTheme.divider,
-                          width: 2,
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.alertColor,
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(16),
                         ),
+                        elevation: 8,
+                        shadowColor: AppTheme.alertColor.withOpacity(0.4),
                       ),
                       child: const Text(
-                        'REVEAL IMPOSTER & WORD',
+                        'EXPOSE INCOGNITO',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          letterSpacing: 0.5,
+                          letterSpacing: 1.5,
+                          fontSize: 16,
                         ),
                       ),
                     ),
@@ -172,12 +173,13 @@ class GameStartedScreen extends StatelessWidget {
 
                 const SizedBox(height: 16),
 
-                // New Game Link
+                // Abort Mission
                 TextButton(
-                  onPressed: () => _startNewGame(context, provider),
+                  onPressed: () => _showExitConfirmation(context, provider),
                   child: Text(
-                    'New Game',
-                    style: AppTheme.bodyLarge.copyWith(
+                    'Abort Mission',
+                    style: AppTheme.bodyMedium.copyWith(
+                      color: AppTheme.textSecondary,
                       decoration: TextDecoration.underline,
                     ),
                   ),
@@ -204,19 +206,18 @@ class GameStartedScreen extends StatelessWidget {
           Column(
             children: [
               Text(
-                'IMPOSTER',
-                style: AppTheme.titleLarge.copyWith(
-                  fontSize: 24,
-                  letterSpacing: 3,
-                  color: AppTheme.imposterRed,
+                'PROJECT',
+                style: AppTheme.labelLarge.copyWith(
+                  color: AppTheme.textSecondary,
+                  letterSpacing: 4,
                 ),
               ),
               Text(
-                'WHO?',
+                'INCOGNITO',
                 style: AppTheme.titleLarge.copyWith(
-                  fontSize: 32,
-                  letterSpacing: 5,
-                  height: 0.9,
+                  color: AppTheme.primaryNeon,
+                  fontSize: 24,
+                  letterSpacing: 2,
                 ),
               ),
             ],
@@ -240,24 +241,16 @@ class GameStartedScreen extends StatelessWidget {
     );
   }
 
-  void _startNewGame(BuildContext context, GameProvider provider) {
-    provider.newGame();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const HomeScreen()),
-    );
-  }
-
   void _showExitConfirmation(BuildContext context, GameProvider provider) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Exit Game?'),
-        content: const Text('Are you sure you want to exit?'),
+        title: const Text('Abort Mission?'),
+        content: const Text('Are you sure you want to abort?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('CANCEL'),
+            child: const Text('RESUME'),
           ),
           ElevatedButton(
             onPressed: () {
@@ -270,10 +263,10 @@ class GameStartedScreen extends StatelessWidget {
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.imposterRed,
+              backgroundColor: AppTheme.alertColor,
               foregroundColor: Colors.white,
             ),
-            child: const Text('EXIT'),
+            child: const Text('ABORT'),
           ),
         ],
       ),

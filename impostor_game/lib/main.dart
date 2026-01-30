@@ -18,7 +18,7 @@ void main() {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.light, // Light icons for dark bg
     ),
   );
 
@@ -33,9 +33,9 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => GameProvider(),
       child: MaterialApp(
-        title: 'Imposter Who?',
+        title: 'Incognito',
         debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
+        theme: AppTheme.darkTheme,
         home: const HomeScreen(),
       ),
     );

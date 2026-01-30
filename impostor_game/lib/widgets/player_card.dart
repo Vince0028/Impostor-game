@@ -61,7 +61,10 @@ class _PlayerCardState extends State<PlayerCard>
   @override
   Widget build(BuildContext context) {
     final isImposter = widget.player.isImposter;
-    final cardColor = isImposter ? AppTheme.cardPurple : widget.cardColor;
+    // Use cardPurple for Imposter/Incognito to be distinct but cool
+    // Or use alertColor if we want it to be very obvious, but maybe revealing it should be subtle at first if the UI is shared?
+    // Ah, this is the "Reveal" screen for the player.
+    final cardColor = isImposter ? AppTheme.imposterColor : widget.cardColor;
 
     return AnimatedBuilder(
       animation: _scaleAnimation,
@@ -79,11 +82,12 @@ class _PlayerCardState extends State<PlayerCard>
             borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
-                color: cardColor.withValues(alpha: 0.4),
+                color: cardColor.withOpacity(0.4),
                 blurRadius: 20,
                 offset: const Offset(0, 10),
               ),
             ],
+            border: Border.all(color: Colors.white.withOpacity(0.1), width: 1),
           ),
           child: _isRevealed || widget.player.hasSeenCard
               ? _buildRevealedContent(isImposter)
@@ -100,17 +104,18 @@ class _PlayerCardState extends State<PlayerCard>
         children: [
           Text(
             widget.player.name.toUpperCase(),
-            style: AppTheme.titleLarge.copyWith(fontSize: 28, letterSpacing: 2),
+            style: AppTheme.titleLarge.copyWith(fontSize: 32, letterSpacing: 2),
           ),
           const SizedBox(height: 16),
           Text(
-            'Do not tell the word to other\nplayers.',
+            'Keep your identity secret.\nDo not show other agents.',
             style: AppTheme.bodyMedium.copyWith(
-              color: AppTheme.textPrimary.withValues(alpha: 0.7),
+              color: AppTheme.textPrimary.withOpacity(0.8),
+              height: 1.5,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 48),
 
           // Hold indicator
           AnimatedOpacity(
@@ -119,16 +124,17 @@ class _PlayerCardState extends State<PlayerCard>
             child: Column(
               children: [
                 Icon(
-                  Icons.touch_app,
-                  size: 48,
-                  color: AppTheme.textPrimary.withValues(alpha: 0.6),
+                  Icons
+                      .fingerprint, // Changed icon to fingerprint for spy theme
+                  size: 64,
+                  color: AppTheme.textPrimary.withOpacity(0.8),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 16),
                 Text(
-                  'HOLD TO REVEAL',
+                  'SCAN TO REVEAL', // Changed text
                   style: AppTheme.labelLarge.copyWith(
-                    color: AppTheme.textPrimary.withValues(alpha: 0.6),
-                    letterSpacing: 1,
+                    color: AppTheme.textPrimary.withOpacity(0.8),
+                    letterSpacing: 2,
                   ),
                 ),
               ],
@@ -158,64 +164,98 @@ class _PlayerCardState extends State<PlayerCard>
             // Word/Imposter Box
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+              padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
+                color: AppTheme.backgroundSurface,
+                borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
+                    color: Colors.black.withOpacity(0.3),
+                    blurRadius: 15,
+                    offset: const Offset(0, 5),
                   ),
                 ],
+                border: Border.all(
+                  color: isImposter
+                      ? AppTheme.alertColor
+                      : AppTheme.primaryNeon,
+                  width: 2,
+                ),
               ),
               child: isImposter
                   ? Column(
                       children: [
                         Text(
-                          'YOU ARE THE',
-                          style: AppTheme.bodyMedium.copyWith(
-                            fontWeight: FontWeight.bold,
+                          'STATUS: COMPROMISED',
+                          style: AppTheme.labelLarge.copyWith(
+                            color: AppTheme.alertColor,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 12),
                         Text(
-                          'IMPOSTER!',
+                          'YOU ARE\nINCOGNITO',
                           style: AppTheme.titleLarge.copyWith(
-                            fontSize: 32,
-                            color: AppTheme.imposterRed,
+                            fontSize: 36,
+                            color: AppTheme.alertColor,
                             letterSpacing: 2,
+                            height: 1.1,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                         if (widget.hint != null) ...[
-                          const SizedBox(height: 16),
-                          Text(
-                            'Hint: ${widget.hint}',
-                            style: AppTheme.bodyMedium.copyWith(
-                              fontStyle: FontStyle.italic,
+                          const SizedBox(height: 24),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
                             ),
-                            textAlign: TextAlign.center,
+                            decoration: BoxDecoration(
+                              color: AppTheme.alertColor.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              'Intel: ${widget.hint}',
+                              style: AppTheme.bodyMedium.copyWith(
+                                fontStyle: FontStyle.italic,
+                                color: AppTheme.textPrimary,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ],
                       ],
                     )
-                  : Text(
-                      widget.word,
-                      style: AppTheme.titleLarge.copyWith(fontSize: 28),
-                      textAlign: TextAlign.center,
+                  : Column(
+                      children: [
+                        Text(
+                          'SECRET PASSCODE',
+                          style: AppTheme.labelLarge.copyWith(
+                            color: AppTheme.primaryNeon,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          widget.word,
+                          style: AppTheme.titleLarge.copyWith(
+                            fontSize: 32,
+                            color: AppTheme.primaryNeon,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 32),
 
             // Instructions
             Text(
               isImposter
-                  ? 'Blend in! Don\'t let them know you\'re the imposter.'
-                  : 'Remember this word. Don\'t say it directly!',
+                  ? 'Blend in. Deceive. Survive.'
+                  : 'Memorize the code. Identify the spy.',
               style: AppTheme.bodyMedium.copyWith(
-                color: AppTheme.textPrimary.withValues(alpha: 0.7),
+                color: AppTheme.textPrimary.withOpacity(0.8),
+                fontSize: 16,
               ),
               textAlign: TextAlign.center,
             ),

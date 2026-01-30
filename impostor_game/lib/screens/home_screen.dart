@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.backgroundLight,
+      backgroundColor: AppTheme.backgroundDark,
       body: SafeArea(
         child: Column(
           children: [
@@ -96,18 +96,22 @@ class HomeScreen extends StatelessWidget {
           Column(
             children: [
               Text(
-                'IMPOSTER',
-                style: AppTheme.titleLarge.copyWith(
-                  fontSize: 28,
-                  letterSpacing: 3,
+                'PROJECT',
+                style: AppTheme.labelLarge.copyWith(
+                  color: AppTheme.textSecondary,
+                  letterSpacing: 4,
                 ),
               ),
               Text(
-                'WHO?',
+                'INCOGNITO',
                 style: AppTheme.titleLarge.copyWith(
-                  fontSize: 42,
-                  letterSpacing: 5,
-                  height: 0.9,
+                  color: AppTheme.primaryNeon,
+                  shadows: [
+                    Shadow(
+                      color: AppTheme.primaryNeon.withOpacity(0.5),
+                      blurRadius: 10,
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -130,54 +134,36 @@ class HomeScreen extends StatelessWidget {
   Widget _buildStartButton(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        children: [
-          // Crown Icon
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              color: const Color(0xFFFF6B6B),
-              borderRadius: BorderRadius.circular(30),
+      child: SizedBox(
+        height: 64,
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: () => _startGame(context),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppTheme.primaryNeon,
+            foregroundColor: Colors.black,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
             ),
-            child: const Center(
-              child: Text('👑', style: TextStyle(fontSize: 28)),
-            ),
+            elevation: 8,
+            shadowColor: AppTheme.primaryNeon.withOpacity(0.6),
           ),
-          const SizedBox(width: 12),
-
-          // Start Game Button
-          Expanded(
-            child: SizedBox(
-              height: 56,
-              child: ElevatedButton(
-                onPressed: () => _startGame(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.primaryGreen,
-                  foregroundColor: AppTheme.textPrimary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.play_arrow, size: 28),
-                    SizedBox(width: 8),
-                    Text(
-                      'START GAME',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                  ],
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.play_arrow_rounded, size: 32),
+              SizedBox(width: 8),
+              Text(
+                'INITIATE MISSION',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 1,
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -193,8 +179,8 @@ class HomeScreen extends StatelessWidget {
     if (provider.players.length < 3) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('You need at least 3 players to start!'),
-          backgroundColor: AppTheme.imposterRed,
+          content: Text('Need at least 3 agents to start mission!'),
+          backgroundColor: AppTheme.alertColor,
         ),
       );
       return;
@@ -204,8 +190,8 @@ class HomeScreen extends StatelessWidget {
     if (provider.selectedCategories.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please select at least one category!'),
-          backgroundColor: AppTheme.imposterRed,
+          content: Text('Select a mission category!'),
+          backgroundColor: AppTheme.alertColor,
         ),
       );
       return;

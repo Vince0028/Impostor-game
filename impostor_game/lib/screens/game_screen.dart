@@ -33,7 +33,7 @@ class _GameScreenState extends State<GameScreen> {
         }
 
         return Scaffold(
-          backgroundColor: AppTheme.backgroundLight,
+          backgroundColor: AppTheme.backgroundDark,
           body: SafeArea(
             child: Column(
               children: [
@@ -81,18 +81,18 @@ class _GameScreenState extends State<GameScreen> {
           Column(
             children: [
               Text(
-                'IMPOSTER',
-                style: AppTheme.titleLarge.copyWith(
-                  fontSize: 24,
-                  letterSpacing: 3,
+                'PROJECT',
+                style: AppTheme.labelLarge.copyWith(
+                  color: AppTheme.textSecondary,
+                  letterSpacing: 4,
                 ),
               ),
               Text(
-                'WHO?',
+                'INCOGNITO',
                 style: AppTheme.titleLarge.copyWith(
-                  fontSize: 32,
-                  letterSpacing: 5,
-                  height: 0.9,
+                  color: AppTheme.primaryNeon,
+                  fontSize: 28,
+                  letterSpacing: 2,
                 ),
               ),
             ],
@@ -127,22 +127,27 @@ class _GameScreenState extends State<GameScreen> {
                 }
               : null,
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppTheme.textPrimary,
-            foregroundColor: Colors.white,
-            disabledBackgroundColor: AppTheme.divider,
+            backgroundColor: AppTheme.primaryNeon,
+            foregroundColor: Colors.black,
+            disabledBackgroundColor: AppTheme.backgroundSurface,
             disabledForegroundColor: AppTheme.textHint,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(16),
             ),
+            elevation: hasSeenCard ? 4 : 0,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.skip_next),
+              Icon(
+                isLastPlayer
+                    ? Icons.play_arrow_rounded
+                    : Icons.skip_next_rounded,
+              ),
               const SizedBox(width: 8),
               Text(
-                isLastPlayer ? 'START GAME' : 'NEXT PLAYER',
+                isLastPlayer ? 'INITIATE GAME' : 'NEXT AGENT',
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -160,14 +165,14 @@ class _GameScreenState extends State<GameScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Exit Game?'),
+        title: const Text('Abort Mission?'),
         content: const Text(
-          'Are you sure you want to exit? The current game will be lost.',
+          'Are you sure you want to abort? All classified data will be lost.',
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('CANCEL'),
+            child: const Text('RESUME'),
           ),
           ElevatedButton(
             onPressed: () {
@@ -176,10 +181,10 @@ class _GameScreenState extends State<GameScreen> {
               context.read<GameProvider>().resetGame();
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.imposterRed,
+              backgroundColor: AppTheme.alertColor,
               foregroundColor: Colors.white,
             ),
-            child: const Text('EXIT'),
+            child: const Text('ABORT'),
           ),
         ],
       ),

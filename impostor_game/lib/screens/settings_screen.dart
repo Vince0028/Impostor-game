@@ -8,9 +8,9 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.backgroundLight,
+      backgroundColor: AppTheme.backgroundDark,
       appBar: AppBar(
-        backgroundColor: AppTheme.backgroundLight,
+        backgroundColor: AppTheme.backgroundDark,
         elevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
@@ -18,7 +18,7 @@ class SettingsScreen extends StatelessWidget {
           color: AppTheme.textPrimary,
         ),
         title: Text(
-          'Settings',
+          'Command Center',
           style: AppTheme.titleMedium.copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
@@ -35,14 +35,16 @@ class SettingsScreen extends StatelessWidget {
                   onTap: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('English is the only language available'),
+                        content: Text(
+                          'English is the only mission language available',
+                        ),
                       ),
                     );
                   },
                 ),
                 _buildDivider(),
                 _buildSettingItem(
-                  title: 'Share with Friends',
+                  title: 'Recruit Agents',
                   onTap: () => _shareApp(),
                 ),
               ],
@@ -54,33 +56,13 @@ class SettingsScreen extends StatelessWidget {
             _buildSettingsCard(
               children: [
                 _buildSettingItem(
-                  title: 'Terms of Use',
+                  title: 'Mission Protocols',
                   onTap: () => _showTerms(context),
                 ),
                 _buildDivider(),
                 _buildSettingItem(
-                  title: 'Privacy',
+                  title: 'Classified Data',
                   onTap: () => _showPrivacy(context),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 16),
-
-            // Purchases
-            _buildSettingsCard(
-              children: [
-                _buildSettingItem(
-                  title: 'Restore Purchases',
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Everything is FREE! No purchases to restore 🎉',
-                        ),
-                      ),
-                    );
-                  },
                 ),
               ],
             ),
@@ -88,7 +70,7 @@ class SettingsScreen extends StatelessWidget {
             const SizedBox(height: 32),
 
             // Footer
-            Text('Email: support@imposterwho.app', style: AppTheme.bodyMedium),
+            Text('Support: support@incognito.game', style: AppTheme.bodyMedium),
             const SizedBox(height: 4),
             Text('v1.0.0', style: AppTheme.bodySmall),
           ],
@@ -100,8 +82,9 @@ class SettingsScreen extends StatelessWidget {
   Widget _buildSettingsCard({required List<Widget> children}) {
     return Container(
       decoration: BoxDecoration(
-        color: AppTheme.backgroundWhite,
+        color: AppTheme.backgroundSurface,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white.withOpacity(0.05)),
       ),
       child: Column(children: children),
     );
@@ -129,14 +112,14 @@ class SettingsScreen extends StatelessWidget {
   Widget _buildDivider() {
     return const Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
-      child: Divider(height: 1),
+      child: Divider(height: 1, color: AppTheme.divider),
     );
   }
 
   void _shareApp() {
     Share.share(
-      '🎭 Play Imposter Who? with your friends!\n\nThe ultimate party game where one person is the imposter. Can you find them?\n\nAll categories are FREE! No paywalls!',
-      subject: 'Imposter Who? - Party Game',
+      '🕵️ Mission: INCOGNITO\n\nThe ultimate hidden identity game. Can you blend in?\n\nJoin the mission now!',
+      subject: 'Incognito - Social Deduction Game',
     );
   }
 
@@ -144,22 +127,21 @@ class SettingsScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Terms of Use'),
+        title: const Text('Mission Protocols'),
         content: const SingleChildScrollView(
           child: Text(
-            'Imposter Who? Terms of Use\n\n'
-            '1. This game is provided free of charge for personal entertainment.\n\n'
-            '2. All categories and words are included at no cost.\n\n'
-            '3. The game is designed for players aged 12 and above.\n\n'
-            '4. We do not collect any personal data.\n\n'
-            '5. Play responsibly and have fun!\n\n'
-            'By using this app, you agree to these terms.',
+            'INCOGNITO Protocols\n\n'
+            '1. This tool is free for all agents.\n\n'
+            '2. All operations are classified and local to your device.\n\n'
+            '3. Maintain cover at all times.\n\n'
+            '4. No data is intercepted or transmitted.\n\n'
+            'By initiating, you agree to these terms.',
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
+            child: const Text('ACKNOWLEDGED'),
           ),
         ],
       ),
@@ -170,23 +152,21 @@ class SettingsScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Privacy Policy'),
+        title: const Text('Classified Data'),
         content: const SingleChildScrollView(
           child: Text(
-            'Imposter Who? Privacy Policy\n\n'
-            '🔒 We respect your privacy!\n\n'
-            '• We do NOT collect any personal information.\n\n'
-            '• We do NOT track your gameplay.\n\n'
-            '• We do NOT share any data with third parties.\n\n'
-            '• All game data stays on your device.\n\n'
-            '• No account required to play.\n\n'
-            'This app is designed to be simple, fun, and privacy-friendly.',
+            'Privacy Clearance Level 5\n\n'
+            '• We do NOT collect agent data.\n\n'
+            '• We do NOT track mission logs.\n\n'
+            '• We do NOT share intel with third parties.\n\n'
+            '• All data remains on this device.\n\n'
+            'Stay hidden, stay safe.',
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
+            child: const Text('ACKNOWLEDGED'),
           ),
         ],
       ),
