@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import '../theme/app_theme.dart';
 import '../utils/top_notification.dart';
+import '../dialogs/update_profile_dialog.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -44,6 +45,14 @@ class SettingsScreen extends StatelessWidget {
                 _buildSettingItem(
                   title: 'Recruit Agents',
                   onTap: () => _shareApp(),
+                ),
+                _buildDivider(),
+                _buildSettingItem(
+                  title: 'Update Credentials',
+                  onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => const UpdateProfileDialog(),
+                  ),
                 ),
               ],
             ),
