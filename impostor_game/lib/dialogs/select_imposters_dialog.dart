@@ -16,7 +16,7 @@ class SelectImpostersDialog extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.all(24),
           decoration: const BoxDecoration(
-            color: AppTheme.backgroundWhite,
+            color: AppTheme.backgroundCard,
             borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           ),
           child: Column(
@@ -35,16 +35,19 @@ class SelectImpostersDialog extends StatelessWidget {
 
               // Header
               Text(
-                'SELECT IMPOSTER COUNT',
+                'AGENTS VS INCOGNITO',
                 style: AppTheme.titleMedium.copyWith(
                   fontWeight: FontWeight.bold,
-                  letterSpacing: 1,
+                  letterSpacing: 2,
+                  color: AppTheme.primaryNeon,
                 ),
               ),
               const SizedBox(height: 8),
               Text(
-                'With $playerCount-${playerCount + 2} players, you can have $maxImposters imposter${maxImposters > 1 ? 's' : ''}.',
-                style: AppTheme.bodyMedium,
+                'With $playerCount agents, balance the threat level.',
+                style: AppTheme.bodyMedium.copyWith(
+                  color: AppTheme.textSecondary,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
@@ -63,27 +66,50 @@ class SelectImpostersDialog extends StatelessWidget {
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? const Color(0xFFFFF9C4)
-                          : AppTheme.backgroundLight,
+                          ? AppTheme.primaryNeon.withOpacity(0.1)
+                          : AppTheme.backgroundSurface,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: isSelected
-                            ? AppTheme.primaryYellow
-                            : AppTheme.divider,
+                            ? AppTheme.primaryNeon
+                            : AppTheme.divider.withOpacity(0.5),
                         width: isSelected ? 2 : 1,
                       ),
+                      boxShadow: isSelected
+                          ? [
+                              BoxShadow(
+                                color: AppTheme.primaryNeon.withOpacity(0.2),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ]
+                          : null,
                     ),
                     child: Row(
                       children: [
                         Text(
-                          '$count Imposter${count > 1 ? 's' : ''}',
+                          '$count Incognito${count > 1 ? 's' : ''}',
                           style: AppTheme.bodyLarge.copyWith(
                             fontWeight: FontWeight.w600,
+                            color: isSelected
+                                ? Colors.white
+                                : AppTheme.textPrimary,
                           ),
                         ),
                         const Spacer(),
                         if (isSelected)
-                          const Icon(Icons.check, color: AppTheme.textPrimary),
+                          Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: AppTheme.primaryNeon,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.check,
+                              size: 16,
+                              color: Colors.black,
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -99,16 +125,18 @@ class SelectImpostersDialog extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () => Navigator.pop(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.textPrimary,
-                    foregroundColor: Colors.white,
+                    backgroundColor: AppTheme.primaryNeon,
+                    foregroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(16),
                     ),
+                    elevation: 4,
+                    shadowColor: AppTheme.primaryNeon.withOpacity(0.4),
                   ),
                   child: const Text(
-                    'CONFIRM',
+                    'CONFIRM THREAT LEVEL',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1,
                     ),

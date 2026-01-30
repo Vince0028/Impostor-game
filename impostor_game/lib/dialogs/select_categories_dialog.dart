@@ -16,7 +16,7 @@ class SelectCategoriesDialog extends StatelessWidget {
             top: MediaQuery.of(context).size.height * 0.15,
           ),
           decoration: const BoxDecoration(
-            color: AppTheme.backgroundWhite,
+            color: AppTheme.backgroundCard,
             borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           ),
           child: Column(
@@ -38,16 +38,19 @@ class SelectCategoriesDialog extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      'SELECT CATEGORIES',
+                      'AUTHORIZED INTEL',
                       style: AppTheme.titleMedium.copyWith(
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 1,
+                        letterSpacing: 2,
+                        color: AppTheme.primaryNeon,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Choose one or more categories for the game.',
-                      style: AppTheme.bodyMedium,
+                      'Select mission parameters',
+                      style: AppTheme.bodyMedium.copyWith(
+                        color: AppTheme.textSecondary,
+                      ),
                     ),
                   ],
                 ),
@@ -81,14 +84,16 @@ class SelectCategoriesDialog extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () => Navigator.pop(context),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.textPrimary,
-                      foregroundColor: Colors.white,
+                      backgroundColor: AppTheme.primaryNeon,
+                      foregroundColor: Colors.black,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(16),
                       ),
+                      elevation: 4,
+                      shadowColor: AppTheme.primaryNeon.withOpacity(0.4),
                     ),
                     child: const Text(
-                      'CONFIRM',
+                      'CONFIRM INTEL',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -119,13 +124,22 @@ class SelectCategoriesDialog extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppTheme.backgroundLight
-              : AppTheme.backgroundWhite,
+              ? AppTheme.primaryNeon.withOpacity(0.1)
+              : AppTheme.backgroundSurface,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? AppTheme.primaryYellow : AppTheme.divider,
+            color: isSelected ? AppTheme.primaryNeon : AppTheme.divider,
             width: isSelected ? 2 : 1,
           ),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: AppTheme.primaryNeon.withOpacity(0.2),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : null,
         ),
         child: Row(
           children: [
@@ -139,11 +153,14 @@ class SelectCategoriesDialog extends StatelessWidget {
                     category.name,
                     style: AppTheme.bodyLarge.copyWith(
                       fontWeight: FontWeight.w600,
+                      color: isSelected ? Colors.white : AppTheme.textPrimary,
                     ),
                   ),
                   Text(
-                    '${category.words.length} words',
-                    style: AppTheme.bodySmall,
+                    '${category.words.length} classified items',
+                    style: AppTheme.bodySmall.copyWith(
+                      color: AppTheme.textSecondary,
+                    ),
                   ),
                 ],
               ),
@@ -151,15 +168,11 @@ class SelectCategoriesDialog extends StatelessWidget {
             if (isSelected)
               Container(
                 padding: const EdgeInsets.all(4),
-                decoration: const BoxDecoration(
-                  color: AppTheme.primaryYellow,
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryNeon,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
-                  Icons.check,
-                  size: 16,
-                  color: AppTheme.textPrimary,
-                ),
+                child: const Icon(Icons.check, size: 16, color: Colors.black),
               ),
           ],
         ),

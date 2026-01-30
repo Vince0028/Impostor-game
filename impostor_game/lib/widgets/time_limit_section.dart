@@ -17,13 +17,13 @@ class TimeLimitSection extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Text('⏰', style: TextStyle(fontSize: 20)),
+                  const Text('⏱️', style: TextStyle(fontSize: 20)),
                   const SizedBox(width: 8),
                   Text(
-                    'TIME LIMIT',
+                    'MISSION DEADLINE',
                     style: AppTheme.labelLarge.copyWith(
-                      color: AppTheme.textSecondary,
-                      letterSpacing: 0.5,
+                      color: AppTheme.primaryNeon,
+                      letterSpacing: 1.5,
                     ),
                   ),
                   const Spacer(),
@@ -33,12 +33,24 @@ class TimeLimitSection extends StatelessWidget {
                   ),
                 ],
               ),
-              Text(
-                provider.settings.timeLimitEnabled
-                    ? '${provider.settings.timeLimitSeconds} seconds'
-                    : 'Disabled',
-                style: AppTheme.bodyLarge,
-              ),
+              if (provider.settings.timeLimitEnabled) ...[
+                const SizedBox(height: 12),
+                Slider(
+                  value: provider.settings.timeLimitSeconds.toDouble(),
+                  min: 30,
+                  max: 180,
+                  divisions: 5,
+                  label: '${provider.settings.timeLimitSeconds}s',
+                  onChanged: (value) => provider.updateTimeLimit(value.toInt()),
+                ),
+                Text(
+                  '${provider.settings.timeLimitSeconds} SECONDS',
+                  style: AppTheme.bodyLarge.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.primaryNeon,
+                  ),
+                ),
+              ],
             ],
           ),
         );

@@ -226,6 +226,5 @@ class AppTheme {
     fontWeight: FontWeight.bold,
     color: primaryNeon,
     letterSpacing: 1.0,
-    uppercase: true,
   );
 }

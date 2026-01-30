@@ -19,7 +19,7 @@ class CategoriesSection extends StatelessWidget {
             children: [
               const SectionHeader(
                 emoji: '🎯',
-                title: 'CATEGORIES',
+                title: 'MISSION TARGETS',
                 showChevron: true,
               ),
               const SizedBox(height: 12),
@@ -35,8 +35,11 @@ class CategoriesSection extends StatelessWidget {
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      color: AppTheme.backgroundLight,
+                      color: AppTheme.backgroundSurface,
                       borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: AppTheme.primaryNeon.withOpacity(0.3),
+                      ),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -45,12 +48,12 @@ class CategoriesSection extends StatelessWidget {
                           category.emoji,
                           style: const TextStyle(fontSize: 16),
                         ),
-                        const SizedBox(width: 6),
+                        const SizedBox(width: 8),
                         Text(
                           category.name,
                           style: AppTheme.bodyMedium.copyWith(
                             fontWeight: FontWeight.w500,
-                            color: AppTheme.textPrimary,
+                            color: Colors.white,
                           ),
                         ),
                       ],

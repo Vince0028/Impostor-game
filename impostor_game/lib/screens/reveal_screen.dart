@@ -15,7 +15,7 @@ class RevealScreen extends StatelessWidget {
         final word = provider.gameState.currentWord ?? '';
 
         return Scaffold(
-          backgroundColor: AppTheme.backgroundLight,
+          backgroundColor: AppTheme.backgroundDark,
           body: SafeArea(
             child: Column(
               children: [
@@ -25,83 +25,104 @@ class RevealScreen extends StatelessWidget {
                 const Spacer(),
 
                 // Imposters Section
-                Text(
-                  'IMPOSTERS:',
-                  style: AppTheme.labelLarge.copyWith(letterSpacing: 1),
-                ),
-                const SizedBox(height: 8),
-
-                ...imposters.map(
-                  (imposter) => Padding(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    child: Text(
-                      imposter.name,
-                      style: AppTheme.titleMedium.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: AppTheme.alertColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: AppTheme.alertColor),
                   ),
-                ),
-
-                const SizedBox(height: 32),
-
-                // Divider
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 80),
-                  child: Divider(color: AppTheme.divider, thickness: 1),
+                  child: Column(
+                    children: [
+                      Text(
+                        'INCOGNITO AGENTS',
+                        style: AppTheme.labelLarge.copyWith(
+                          letterSpacing: 2,
+                          color: AppTheme.alertColor,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      ...imposters.map(
+                        (imposter) => Text(
+                          imposter.name.toUpperCase(),
+                          style: AppTheme.titleLarge.copyWith(
+                            fontSize: 32,
+                            color: Colors.white,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
 
                 const SizedBox(height: 32),
 
                 // Word Section
-                Text(
-                  'WORD:',
-                  style: AppTheme.labelLarge.copyWith(letterSpacing: 1),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  word,
-                  style: AppTheme.titleLarge.copyWith(
-                    fontSize: 32,
-                    color: AppTheme.imposterRed,
-                    letterSpacing: 1,
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryNeon.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: AppTheme.primaryNeon),
                   ),
-                  textAlign: TextAlign.center,
+                  child: Column(
+                    children: [
+                      Text(
+                        'SECRET PASSCODE',
+                        style: AppTheme.labelLarge.copyWith(
+                          letterSpacing: 2,
+                          color: AppTheme.primaryNeon,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        word.toUpperCase(),
+                        style: AppTheme.titleLarge.copyWith(
+                          fontSize: 32,
+                          color: Colors.white,
+                          letterSpacing: 1,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
 
                 const Spacer(),
 
                 // New Game Button
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 48),
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: SizedBox(
+                    width: double.infinity,
                     height: 56,
                     child: ElevatedButton(
                       onPressed: () => _newGame(context, provider),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.primaryGreen,
-                        foregroundColor: AppTheme.textPrimary,
+                        backgroundColor: AppTheme.primaryNeon,
+                        foregroundColor: Colors.black,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(16),
                         ),
                         elevation: 4,
-                        shadowColor: AppTheme.primaryGreen.withValues(
-                          alpha: 0.5,
-                        ),
+                        shadowColor: AppTheme.primaryNeon.withOpacity(0.4),
                       ),
                       child: const Text(
-                        'NEW GAME',
+                        'INITIATE NEW MISSION',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          letterSpacing: 2,
+                          letterSpacing: 1,
                         ),
                       ),
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 48),
+                const SizedBox(height: 32),
               ],
             ),
           ),
@@ -122,19 +143,18 @@ class RevealScreen extends StatelessWidget {
           Column(
             children: [
               Text(
-                'IMPOSTER',
-                style: AppTheme.titleLarge.copyWith(
-                  fontSize: 24,
-                  letterSpacing: 3,
-                  color: AppTheme.imposterRed,
+                'PROJECT',
+                style: AppTheme.labelLarge.copyWith(
+                  color: AppTheme.textSecondary,
+                  letterSpacing: 4,
                 ),
               ),
               Text(
-                'WHO?',
+                'INCOGNITO',
                 style: AppTheme.titleLarge.copyWith(
-                  fontSize: 32,
-                  letterSpacing: 5,
-                  height: 0.9,
+                  color: AppTheme.primaryNeon,
+                  fontSize: 24,
+                  letterSpacing: 2,
                 ),
               ),
             ],
@@ -152,7 +172,10 @@ class RevealScreen extends StatelessWidget {
   }
 
   void _newGame(BuildContext context, GameProvider provider) {
-    provider.startGame();
+    // Reset needed state but keep players/categories if desired?
+    // For now we assume startGame handles logic or we route to Home
+    provider
+        .newGame(); // Use newGame instead of startGame to reset and go to setup
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (_) => const HomeScreen()),

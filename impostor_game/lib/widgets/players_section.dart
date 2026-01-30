@@ -19,7 +19,7 @@ class PlayersSection extends StatelessWidget {
             children: [
               const SectionHeader(
                 emoji: '✋',
-                title: 'PLAYERS',
+                title: 'AGENTS',
                 showChevron: true,
               ),
               const SizedBox(height: 12),
@@ -35,13 +35,17 @@ class PlayersSection extends StatelessWidget {
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      color: AppTheme.backgroundLight,
+                      color: AppTheme.backgroundSurface,
                       borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: AppTheme.primaryNeon.withOpacity(0.3),
+                      ),
                     ),
                     child: Text(
                       player.name,
                       style: AppTheme.bodyLarge.copyWith(
                         fontWeight: FontWeight.w500,
+                        color: Colors.white,
                       ),
                     ),
                   );

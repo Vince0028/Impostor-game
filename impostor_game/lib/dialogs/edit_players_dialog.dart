@@ -32,7 +32,7 @@ class _EditPlayersDialogState extends State<EditPlayersDialog> {
             top: MediaQuery.of(context).size.height * 0.2,
           ),
           decoration: const BoxDecoration(
-            color: AppTheme.backgroundWhite,
+            color: AppTheme.backgroundCard,
             borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           ),
           child: Column(
@@ -55,16 +55,27 @@ class _EditPlayersDialogState extends State<EditPlayersDialog> {
                 child: Column(
                   children: [
                     Text(
-                      'EDIT PLAYERS',
+                      'AGENT ROSTER',
                       style: AppTheme.titleMedium.copyWith(
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 1,
+                        letterSpacing: 2,
+                        color: AppTheme.primaryNeon,
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text('3-20 players', style: AppTheme.bodyMedium),
+                    Text(
+                      '3-20 agents required',
+                      style: AppTheme.bodyMedium.copyWith(
+                        color: AppTheme.textSecondary,
+                      ),
+                    ),
                     const SizedBox(height: 2),
-                    Text('Tap a name to edit', style: AppTheme.bodySmall),
+                    Text(
+                      'Tap code name to edit',
+                      style: AppTheme.bodySmall.copyWith(
+                        color: AppTheme.textHint,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -89,12 +100,19 @@ class _EditPlayersDialogState extends State<EditPlayersDialog> {
                         vertical: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: AppTheme.backgroundLight,
+                        color: AppTheme.backgroundSurface,
                         borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: AppTheme.primaryNeon.withOpacity(0.3),
+                        ),
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.edit, size: 20, color: AppTheme.textHint),
+                          Icon(
+                            Icons.edit,
+                            size: 20,
+                            color: AppTheme.primaryNeon.withOpacity(0.7),
+                          ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: TextField(
@@ -104,7 +122,9 @@ class _EditPlayersDialogState extends State<EditPlayersDialog> {
                                 isDense: true,
                                 contentPadding: EdgeInsets.zero,
                               ),
-                              style: AppTheme.bodyLarge,
+                              style: AppTheme.bodyLarge.copyWith(
+                                color: Colors.white,
+                              ),
                               onChanged: (value) {
                                 provider.updatePlayerName(player.id, value);
                               },
@@ -115,7 +135,7 @@ class _EditPlayersDialogState extends State<EditPlayersDialog> {
                               onPressed: () => provider.removePlayer(player.id),
                               icon: const Icon(
                                 Icons.close,
-                                color: AppTheme.imposterRed,
+                                color: AppTheme.alertColor,
                                 size: 20,
                               ),
                               padding: EdgeInsets.zero,
@@ -135,7 +155,11 @@ class _EditPlayersDialogState extends State<EditPlayersDialog> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     decoration: BoxDecoration(
-                      border: Border.all(color: AppTheme.divider),
+                      border: Border.all(
+                        color: AppTheme.textSecondary.withOpacity(0.5),
+                        style: BorderStyle.solid,
+                      ),
+                      color: AppTheme.backgroundSurface.withOpacity(0.5),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
@@ -144,12 +168,13 @@ class _EditPlayersDialogState extends State<EditPlayersDialog> {
                           child: TextField(
                             controller: _newPlayerController,
                             decoration: InputDecoration(
-                              hintText: 'Add player name',
+                              hintText: 'New Agent Code Name',
                               hintStyle: AppTheme.bodyMedium.copyWith(
                                 color: AppTheme.textHint,
                               ),
                               border: InputBorder.none,
                             ),
+                            style: const TextStyle(color: Colors.white),
                             onSubmitted: (_) => _addPlayer(provider),
                           ),
                         ),
@@ -157,13 +182,13 @@ class _EditPlayersDialogState extends State<EditPlayersDialog> {
                           onPressed: () => _addPlayer(provider),
                           icon: Container(
                             padding: const EdgeInsets.all(4),
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFFFD54F),
+                            decoration: BoxDecoration(
+                              color: AppTheme.primaryNeon,
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
                               Icons.add,
-                              color: AppTheme.textPrimary,
+                              color: Colors.black,
                               size: 20,
                             ),
                           ),
@@ -182,14 +207,16 @@ class _EditPlayersDialogState extends State<EditPlayersDialog> {
                   child: ElevatedButton(
                     onPressed: () => Navigator.pop(context),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.textPrimary,
-                      foregroundColor: Colors.white,
+                      backgroundColor: AppTheme.primaryNeon,
+                      foregroundColor: Colors.black,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(16),
                       ),
+                      elevation: 4,
+                      shadowColor: AppTheme.primaryNeon.withOpacity(0.4),
                     ),
                     child: const Text(
-                      'CONFIRM',
+                      'CONFIRM ROSTER',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -209,7 +236,7 @@ class _EditPlayersDialogState extends State<EditPlayersDialog> {
   void _addPlayer(GameProvider provider) {
     final name = _newPlayerController.text.trim();
     if (name.isEmpty) {
-      provider.addPlayer('Player ${provider.players.length + 1}');
+      provider.addPlayer('Agent ${provider.players.length + 1}');
     } else {
       provider.addPlayer(name);
     }

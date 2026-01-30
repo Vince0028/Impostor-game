@@ -17,13 +17,13 @@ class TrollModeSection extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Text('😈', style: TextStyle(fontSize: 20)),
+                  const Text('⚠️', style: TextStyle(fontSize: 20)),
                   const SizedBox(width: 8),
                   Text(
-                    'TROLL MODE',
+                    'SYSTEM GLITCH',
                     style: AppTheme.labelLarge.copyWith(
-                      color: AppTheme.textSecondary,
-                      letterSpacing: 0.5,
+                      color: AppTheme.alertColor,
+                      letterSpacing: 1.5,
                     ),
                   ),
                   const Spacer(),
@@ -35,7 +35,7 @@ class TrollModeSection extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'At some rounds, everyone becomes imposter — it\'s chaos, confusion, and fun.',
+                'WARNING: System instability may cause all agents to go rogue.',
                 style: AppTheme.bodyMedium,
               ),
             ],

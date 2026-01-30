@@ -20,10 +20,10 @@ class ImposterHintSection extends StatelessWidget {
                   const Text('💡', style: TextStyle(fontSize: 20)),
                   const SizedBox(width: 8),
                   Text(
-                    'IMPOSTER HINT',
+                    'INCOGNITO INTEL',
                     style: AppTheme.labelLarge.copyWith(
-                      color: AppTheme.textSecondary,
-                      letterSpacing: 0.5,
+                      color: AppTheme.primaryNeon,
+                      letterSpacing: 1.5,
                     ),
                   ),
                   const Spacer(),
@@ -35,7 +35,7 @@ class ImposterHintSection extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'Give imposters a hint about the word to help them blend in better.',
+                'Leak restricted data to help incognito agents blend in.',
                 style: AppTheme.bodyMedium,
               ),
             ],
