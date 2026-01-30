@@ -5,6 +5,7 @@ void showTopNotification(
   BuildContext context,
   String message, {
   bool isError = false,
+  Duration duration = const Duration(seconds: 2, milliseconds: 500),
 }) {
   final overlay = Overlay.of(context);
   late OverlayEntry overlayEntry;
@@ -72,7 +73,7 @@ void showTopNotification(
 
   overlay.insert(overlayEntry);
 
-  Future.delayed(const Duration(seconds: 2, milliseconds: 500), () {
+  Future.delayed(duration, () {
     if (overlayEntry.mounted) {
       overlayEntry.remove();
     }

@@ -7,6 +7,7 @@ class CustomTextField extends StatefulWidget {
   final bool isPassword;
   final TextInputType keyboardType;
   final TextEditingController? controller;
+  final bool enabled;
 
   const CustomTextField({
     super.key,
@@ -15,6 +16,7 @@ class CustomTextField extends StatefulWidget {
     this.isPassword = false,
     this.keyboardType = TextInputType.text,
     this.controller,
+    this.enabled = true,
   });
 
   @override
@@ -34,9 +36,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return TextField(
       controller: widget.controller,
+      enabled: widget.enabled,
       obscureText: _obscureText,
       keyboardType: widget.keyboardType,
-      style: AppTheme.bodyLarge.copyWith(color: AppTheme.textPrimary),
+      style: AppTheme.bodyLarge.copyWith(
+        color: widget.enabled ? AppTheme.textPrimary : AppTheme.textHint,
+      ),
       decoration: InputDecoration(
         hintText: widget.hintText,
         // Using existing AppTheme's inputDecorationTheme implicitly

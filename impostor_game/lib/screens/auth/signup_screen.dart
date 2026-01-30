@@ -66,10 +66,11 @@ class _SignupScreenState extends State<SignupScreen> {
       showTopNotification(
         context,
         'Clearance pending. Check secure channel (email) for activation link.',
+        duration: const Duration(seconds: 5),
       );
 
       // Wait a bit so user sees the message
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 5));
 
       if (!mounted) return;
       Navigator.pushReplacement(

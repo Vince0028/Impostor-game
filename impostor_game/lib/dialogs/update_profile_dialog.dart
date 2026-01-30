@@ -78,6 +78,14 @@ class _UpdateProfileDialogState extends State<UpdateProfileDialog> {
             ),
             const SizedBox(height: 24),
             CustomTextField(
+              hintText:
+                  SupabaseService().client.auth.currentUser?.email ??
+                  'Agent Email',
+              prefixIcon: Icons.email_outlined,
+              enabled: false,
+            ),
+            const SizedBox(height: 16),
+            CustomTextField(
               controller: _usernameController,
               hintText: 'New Codename',
               prefixIcon: Icons.badge_outlined,
