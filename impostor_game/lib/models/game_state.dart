@@ -27,12 +27,20 @@ class Player {
   }
 }
 
+/// Represents a word with a corresponding hint
+class TargetWord {
+  final String text;
+  final String hint;
+
+  const TargetWord(this.text, this.hint);
+}
+
 /// Represents a category with its words
 class GameCategory {
   final String id;
   final String name;
   final String emoji;
-  final List<String> words;
+  final List<TargetWord> words;
 
   const GameCategory({
     required this.id,

@@ -164,8 +164,8 @@ class GameProvider extends ChangeNotifier {
         .map((p) => p.copyWith(isImposter: false, hasSeenCard: false))
         .toList();
 
-    // Shuffle players for random order
-    resetPlayers.shuffle(_random);
+    // Do not shuffle players, keep them in order for pass-and-play
+    // resetPlayers.shuffle(_random);
 
     // Select random imposters
     final imposterIndices = <int>[];
@@ -190,7 +190,7 @@ class GameProvider extends ChangeNotifier {
     // Generate hint if enabled
     String? hint;
     if (_gameState.settings.imposterHintEnabled) {
-      hint = _generateHint(selectedWord);
+      hint = selectedWord.hint;
     }
 
     // Handle troll mode - sometimes make everyone an imposter
@@ -203,7 +203,7 @@ class GameProvider extends ChangeNotifier {
 
     _gameState = _gameState.copyWith(
       players: resetPlayers,
-      currentWord: selectedWord,
+      currentWord: selectedWord.text,
       currentHint: hint,
       currentPlayerIndex: 0,
       gameStarted: false,
@@ -211,16 +211,6 @@ class GameProvider extends ChangeNotifier {
     );
 
     notifyListeners();
-  }
-
-  String _generateHint(String word) {
-    // Generate a simple hint - first letter and word length
-    if (word.isEmpty) return '';
-    final words = word.split(' ');
-    if (words.length > 1) {
-      return '${words.length} words, starts with "${word[0]}"';
-    }
-    return '${word.length} letters, starts with "${word[0]}"';
   }
 
   void playerSawCard() {

@@ -1,12 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:async';
 import '../providers/game_provider.dart';
 import '../theme/app_theme.dart';
 import 'reveal_screen.dart';
 import 'home_screen.dart';
 
-class GameStartedScreen extends StatelessWidget {
+class GameStartedScreen extends StatefulWidget {
   const GameStartedScreen({super.key});
+
+  @override
+  State<GameStartedScreen> createState() => _GameStartedScreenState();
+}
+
+class _GameStartedScreenState extends State<GameStartedScreen> {
+  Timer? _timer;
+  int _remainingSeconds = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    final provider = context.read<GameProvider>();
+    if (provider.settings.timeLimitEnabled) {
+      _remainingSeconds = provider.settings.timeLimitSeconds;
+      _startTimer();
+    }
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_remainingSeconds > 0) {
+        setState(() {
+          _remainingSeconds--;
+        });
+      } else {
+        _timer?.cancel();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +60,52 @@ class GameStartedScreen extends StatelessWidget {
                 _buildHeader(context, provider),
 
                 const Spacer(),
+
+                // Timer Display (if enabled)
+                if (provider.settings.timeLimitEnabled) ...[
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _remainingSeconds <= 10
+                          ? AppTheme.alertColor.withOpacity(0.2)
+                          : AppTheme.backgroundSurface,
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(
+                        color: _remainingSeconds <= 10
+                            ? AppTheme.alertColor
+                            : AppTheme.primaryNeon.withOpacity(0.5),
+                        width: 2,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.timer_outlined,
+                          color: _remainingSeconds <= 10
+                              ? AppTheme.alertColor
+                              : AppTheme.primaryNeon,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          _formatTime(_remainingSeconds),
+                          style: AppTheme.titleLarge.copyWith(
+                            fontFamily: 'Courier', // Monospaced if available
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: _remainingSeconds <= 10
+                                ? AppTheme.alertColor
+                                : Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                ],
 
                 // Game Started Text
                 Padding(
@@ -90,58 +173,6 @@ class GameStartedScreen extends StatelessWidget {
 
                 const Spacer(),
 
-                // Recording Section (Simplified or removed? Kept but styled)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: AppTheme.backgroundSurface,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white.withOpacity(0.05)),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.red.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Icon(
-                            Icons.fiber_manual_record,
-                            color: Colors.red,
-                            size: 24,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'SURVEILLANCE',
-                                style: AppTheme.labelLarge.copyWith(
-                                  fontSize: 12,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                'Record the session for evidence.',
-                                style: AppTheme.bodyMedium.copyWith(
-                                  color: AppTheme.textSecondary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 32),
-
                 // Reveal Button
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -192,6 +223,13 @@ class GameStartedScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  String _formatTime(int totalSeconds) {
+    if (totalSeconds <= 0) return "00:00";
+    final minutes = totalSeconds ~/ 60;
+    final seconds = totalSeconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
   Widget _buildHeader(BuildContext context, GameProvider provider) {

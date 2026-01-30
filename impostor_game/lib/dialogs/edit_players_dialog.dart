@@ -28,58 +28,63 @@ class _EditPlayersDialogState extends State<EditPlayersDialog> {
     return Consumer<GameProvider>(
       builder: (context, provider, _) {
         return Container(
-          height: MediaQuery.of(context).size.height * 0.85,
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.85,
+          ),
           decoration: const BoxDecoration(
             color: AppTheme.backgroundCard,
             borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           ),
-          child: Column(
-            children: [
-              // Handle
-              Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.only(top: 12),
-                decoration: BoxDecoration(
-                  color: AppTheme.divider,
-                  borderRadius: BorderRadius.circular(2),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Handle
+                Container(
+                  width: 40,
+                  height: 4,
+                  margin: const EdgeInsets.only(top: 12),
+                  decoration: BoxDecoration(
+                    color: AppTheme.divider,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
-              ),
 
-              // Header
-              Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  children: [
-                    Text(
-                      'AGENT ROSTER',
-                      style: AppTheme.titleMedium.copyWith(
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 2,
-                        color: AppTheme.primaryNeon,
+                // Header
+                Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    children: [
+                      Text(
+                        'AGENT ROSTER',
+                        style: AppTheme.titleMedium.copyWith(
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
+                          color: AppTheme.primaryNeon,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '3-20 agents required',
-                      style: AppTheme.bodyMedium.copyWith(
-                        color: AppTheme.textSecondary,
+                      const SizedBox(height: 4),
+                      Text(
+                        '3-20 agents required',
+                        style: AppTheme.bodyMedium.copyWith(
+                          color: AppTheme.textSecondary,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      'Tap code name to edit',
-                      style: AppTheme.bodySmall.copyWith(
-                        color: AppTheme.textHint,
+                      const SizedBox(height: 2),
+                      Text(
+                        'Tap code name to edit',
+                        style: AppTheme.bodySmall.copyWith(
+                          color: AppTheme.textHint,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
 
-              // Player List
-              Expanded(
-                child: ListView.builder(
+                // Player List
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   itemCount: provider.players.length,
                   itemBuilder: (context, index) {
@@ -142,97 +147,96 @@ class _EditPlayersDialogState extends State<EditPlayersDialog> {
                     );
                   },
                 ),
-              ),
 
-              // Bottom Section (Add Player + Confirm)
-              // Ensure this stays visible above keyboard
-              Padding(
-                padding: EdgeInsets.only(
-                  left: 24,
-                  right: 24,
-                  top: 16,
-                  bottom: MediaQuery.of(context).viewInsets.bottom + 24,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Add Player
-                    if (provider.players.length < 20)
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        margin: const EdgeInsets.only(bottom: 16),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: AppTheme.textSecondary.withOpacity(0.5),
-                            style: BorderStyle.solid,
+                // Bottom Section (Add Player + Confirm)
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 24,
+                    right: 24,
+                    top: 16,
+                    bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Add Player
+                      if (provider.players.length < 20)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          margin: const EdgeInsets.only(bottom: 16),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: AppTheme.textSecondary.withOpacity(0.5),
+                              style: BorderStyle.solid,
+                            ),
+                            color: AppTheme.backgroundSurface.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          color: AppTheme.backgroundSurface.withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                controller: _newPlayerController,
-                                decoration: InputDecoration(
-                                  hintText: 'New Agent Code Name',
-                                  hintStyle: AppTheme.bodyMedium.copyWith(
-                                    color: AppTheme.textHint,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _newPlayerController,
+                                  decoration: InputDecoration(
+                                    hintText: 'New Agent Code Name',
+                                    hintStyle: AppTheme.bodyMedium.copyWith(
+                                      color: AppTheme.textHint,
+                                    ),
+                                    border: InputBorder.none,
                                   ),
-                                  border: InputBorder.none,
-                                ),
-                                style: const TextStyle(color: Colors.white),
-                                onSubmitted: (_) => _addPlayer(provider),
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () => _addPlayer(provider),
-                              icon: Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  color: AppTheme.primaryNeon,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.add,
-                                  color: Colors.black,
-                                  size: 20,
+                                  style: const TextStyle(color: Colors.white),
+                                  onSubmitted: (_) => _addPlayer(provider),
                                 ),
                               ),
-                            ),
-                          ],
+                              IconButton(
+                                onPressed: () => _addPlayer(provider),
+                                icon: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.primaryNeon,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.add,
+                                    color: Colors.black,
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
 
-                    // Confirm Button
-                    SizedBox(
-                      width: double.infinity,
-                      height: 56,
-                      child: ElevatedButton(
-                        onPressed: () => Navigator.pop(context),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppTheme.primaryNeon,
-                          foregroundColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+                      // Confirm Button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 56,
+                        child: ElevatedButton(
+                          onPressed: () => Navigator.pop(context),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.primaryNeon,
+                            foregroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            elevation: 4,
+                            shadowColor: AppTheme.primaryNeon.withOpacity(0.4),
                           ),
-                          elevation: 4,
-                          shadowColor: AppTheme.primaryNeon.withOpacity(0.4),
-                        ),
-                        child: const Text(
-                          'CONFIRM ROSTER',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1,
+                          child: const Text(
+                            'CONFIRM ROSTER',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
