@@ -141,19 +141,10 @@ class WelcomeScreen extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: isPrimary
-                      ? Colors.black.withOpacity(0.2)
-                      : AppTheme.backgroundSurface,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  icon,
-                  color: isPrimary ? Colors.black : AppTheme.textPrimary,
-                  size: 24,
-                ),
+              Icon(
+                icon,
+                color: isPrimary ? Colors.black : AppTheme.primaryNeon,
+                size: 28,
               ),
               const SizedBox(width: 16),
               Column(

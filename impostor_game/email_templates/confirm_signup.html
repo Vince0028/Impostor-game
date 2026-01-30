@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirm Your Identity</title>
+  <style>
+    /* Reset & Basics */
+    body { margin: 0; padding: 0; background-color: #0A0A0A; font-family: 'Courier New', Courier, monospace; color: #ffffff; }
+    table { border-spacing: 0; width: 100%; max-width: 600px; margin: 0 auto; }
+    td { padding: 0; }
+    a { text-decoration: none; }
+    
+    /* Theme Colors */
+    .bg-dark { background-color: #0A0A0A; }
+    .bg-card { background-color: #1A1A1A; }
+    .text-neon { color: #00FFC2; }
+    .text-dim { color: #666666; }
+    .border-neon { border: 1px solid #00FFC2; }
+    
+    /* Button */
+    .btn-neon {
+      background-color: #00FFC2;
+      color: #000000;
+      padding: 16px 32px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      display: inline-block;
+      border-radius: 4px;
+      box-shadow: 0 0 15px rgba(0, 255, 194, 0.4);
+    }
+    
+    /* Typography */
+    .heading {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      margin: 0;
+      text-transform: uppercase;
+    }
+    .subheading {
+      font-size: 14px;
+      letter-spacing: 2px;
+      color: #666666;
+      margin-bottom: 20px;
+    }
+    .body-text {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #cccccc;
+    }
+  </style>
+</head>
+<body class="bg-dark">
+  <table role="presentation">
+    <!-- Top Spacer -->
+    <tr><td height="40"></td></tr>
+
+    <!-- Logo / Brand Area -->
+    <tr>
+      <td align="center" style="padding-bottom: 30px;">
+        <div style="border: 2px solid #00FFC2; width: 60px; height: 60px; border-radius: 50%; line-height: 60px; text-align: center; color: #00FFC2; font-size: 30px; box-shadow: 0 0 20px rgba(0,255,194,0.2);">
+          ?
+        </div>
+      </td>
+    </tr>
+
+    <!-- Main Card -->
+    <tr>
+      <td class="bg-card" style="padding: 40px; border: 1px solid #333333; border-radius: 8px;">
+        <table role="presentation">
+          <!-- Classified Header -->
+          <tr>
+            <td align="center" style="border-bottom: 1px solid #333333; padding-bottom: 20px;">
+              <p class="subheading">PROJECT INCOGNITO // SECURITY LEVEL 5</p>
+              <h1 class="heading text-neon">IDENTITY VERIFICATION</h1>
+            </td>
+          </tr>
+
+          <!-- Message Body -->
+          <tr>
+            <td style="padding-top: 30px; padding-bottom: 30px;">
+              <p class="body-text">
+                Greetings Agent,
+                <br><br>
+                A request has been lodged to enlist this secure channel for field operations. To activate your clearance level and access the network, you must verify your identity protocols.
+                <br><br>
+                <strong>Warning:</strong> If you did not initiate this request, disregard this communique.
+              </p>
+            </td>
+          </tr>
+
+          <!-- CTA Button -->
+          <tr>
+            <td align="center" style="padding-bottom: 30px;">
+              <a href="{{ .ConfirmationURL }}" class="btn-neon">
+                ESTABLISH UPLINK
+              </a>
+            </td>
+          </tr>
+
+          <!-- Link Fallback -->
+          <tr>
+            <td align="center">
+              <p style="font-size: 12px; color: #666666; margin-bottom: 5px;">Or decrypt manually via direct uplink:</p>
+              <a href="{{ .ConfirmationURL }}" style="font-size: 12px; color: #00FFC2; word-break: break-all;">
+                {{ .ConfirmationURL }}
+              </a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+      <td align="center" style="padding-top: 30px;">
+        <p style="font-size: 12px; color: #333333; font-family: sans-serif;">
+          &copy; 2026 PROJECT INCOGNITO. ALL RIGHTS RESERVED.<br>
+          TRANSMISSION ENDED.
+        </p>
+      </td>
+    </tr>
+    
+    <!-- Bottom Spacer -->
+    <tr><td height="40"></td></tr>
+  </table>
+</body>
+</html>

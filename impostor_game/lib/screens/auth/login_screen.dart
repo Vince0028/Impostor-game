@@ -1,10 +1,139 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/custom_text_field.dart';
+import '../../services/supabase_service.dart';
+import '../../utils/top_notification.dart';
 import '../home_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleLogin() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      showTopNotification(
+        context,
+        'Please enter both Agent ID and Passcode',
+        isError: true,
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      await SupabaseService().signIn(email, password);
+
+      if (!mounted) return;
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+        (route) => false,
+      );
+    } catch (e) {
+      if (!mounted) return;
+      showTopNotification(
+        context,
+        'Access Denied: ${e.toString().replaceAll("Exception: ", "")}',
+        isError: true,
+      );
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  void _showForgotPasswordDialog(BuildContext context) {
+    final emailResetController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.backgroundSurface,
+        title: Text(
+          'RESET CLEARANCE',
+          style: AppTheme.titleMedium.copyWith(color: AppTheme.primaryNeon),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Enter your secure channel ID to receive reset protocols.',
+              style: AppTheme.bodyMedium,
+            ),
+            const SizedBox(height: 16),
+            CustomTextField(
+              controller: emailResetController,
+              hintText: 'Agent ID (Email)',
+              prefixIcon: Icons.email_outlined,
+              keyboardType: TextInputType.emailAddress,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('CANCEL'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final email = emailResetController.text.trim();
+              if (email.isEmpty) {
+                showTopNotification(
+                  context,
+                  'Please enter your Agent ID',
+                  isError: true,
+                );
+                return;
+              }
+
+              try {
+                await SupabaseService().sendPasswordResetEmail(email);
+                if (context.mounted) {
+                  Navigator.pop(context);
+                  showTopNotification(
+                    context,
+                    'Reset protocols sent to secure channel.',
+                  );
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  showTopNotification(
+                    context,
+                    'Failed to send reset protocols: ${e.toString()}',
+                    isError: true,
+                  );
+                }
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.primaryNeon,
+              foregroundColor: Colors.black,
+            ),
+            child: const Text('SEND'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +174,15 @@ class LoginScreen extends StatelessWidget {
 
               const SizedBox(height: 48),
 
-              const CustomTextField(
+              CustomTextField(
+                controller: _emailController,
                 hintText: 'Agent ID (Email)',
                 prefixIcon: Icons.email_outlined,
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 16),
-              const CustomTextField(
+              CustomTextField(
+                controller: _passwordController,
                 hintText: 'Passcode',
                 prefixIcon: Icons.lock_outline,
                 isPassword: true,
@@ -78,14 +209,7 @@ class LoginScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // TODO: Implement actual login logic with Supabase
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (_) => const HomeScreen()),
-                      (route) => false,
-                    );
-                  },
+                  onPressed: _isLoading ? null : _handleLogin,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryNeon,
                     shape: RoundedRectangleBorder(
@@ -94,75 +218,29 @@ class LoginScreen extends StatelessWidget {
                     shadowColor: AppTheme.primaryNeon.withOpacity(0.5),
                     elevation: 8,
                   ),
-                  child: const Text(
-                    'ACCESS TERMINAL',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 1.5,
-                    ),
-                  ),
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: CircularProgressIndicator(
+                            color: Colors.black,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const Text(
+                          'ACCESS TERMINAL',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 1.5,
+                          ),
+                        ),
                 ),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  void _showForgotPasswordDialog(BuildContext context) {
-    final emailController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppTheme.backgroundSurface,
-        title: Text(
-          'RESET CLEARANCE',
-          style: AppTheme.titleMedium.copyWith(color: AppTheme.primaryNeon),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Enter your secure channel ID to receive reset protocols.',
-              style: AppTheme.bodyMedium,
-            ),
-            const SizedBox(height: 16),
-            CustomTextField(
-              controller: emailController,
-              hintText: 'Agent ID (Email)',
-              prefixIcon: Icons.email_outlined,
-              keyboardType: TextInputType.emailAddress,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('CANCEL'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              // TODO: Call SupabaseService.instance.sendPasswordResetEmail
-              // For now, simulate success
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Reset protocols sent to secure channel.'),
-                  backgroundColor: AppTheme.primaryNeon,
-                ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.primaryNeon,
-              foregroundColor: Colors.black,
-            ),
-            child: const Text('SEND'),
-          ),
-        ],
       ),
     );
   }

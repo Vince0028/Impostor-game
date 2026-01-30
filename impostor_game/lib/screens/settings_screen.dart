@@ -3,6 +3,8 @@ import 'package:share_plus/share_plus.dart';
 import '../theme/app_theme.dart';
 import '../utils/top_notification.dart';
 import '../dialogs/update_profile_dialog.dart';
+import '../services/supabase_service.dart';
+import 'auth/welcome_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -72,6 +74,40 @@ class SettingsScreen extends StatelessWidget {
                   onTap: () => _showPrivacy(context),
                 ),
               ],
+            ),
+
+            const SizedBox(height: 24),
+
+            // Logout Button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () async {
+                  await SupabaseService().signOut();
+                  if (context.mounted) {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (_) => const WelcomeScreen()),
+                      (route) => false,
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.alertColor.withOpacity(0.1),
+                  foregroundColor: AppTheme.alertColor,
+                  elevation: 0,
+                  side: const BorderSide(color: AppTheme.alertColor),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+                icon: const Icon(Icons.logout),
+                label: const Text(
+                  'TERMINATE SESSION',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
+                  ),
+                ),
+              ),
             ),
 
             const SizedBox(height: 32),

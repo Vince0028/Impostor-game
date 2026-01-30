@@ -1,8 +1,8 @@
 
 -- 1. Create a table for public profiles using Supabase Auth
 create table profiles (
-  id uuid references auth.users not null primary key,
-  updated_at timestamp with time zone,
+  id uuid references auth.users on delete cascade not null primary key,
+  updated_at timestamp with time zone default timezone('utc'::text, now()),
   username text unique,
   avatar_url text,
   website text,
@@ -31,7 +31,7 @@ create policy "Users can update own profile."
 
 -- 3. Create a Trigger to auto-create profile on signup
 -- This ensures that when a user signs up via Auth, a row is added to 'profiles'
-create function public.handle_new_user()
+create or replace function public.handle_new_user()
 returns trigger
 language plpgsql
 security definer set search_path = public
@@ -43,6 +43,8 @@ begin
 end;
 $$;
 
+-- Drop trigger if exists to allow idempotency in scripts usually, but here just creating
+drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();

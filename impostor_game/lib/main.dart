@@ -4,9 +4,10 @@ import 'package:provider/provider.dart';
 import 'providers/game_provider.dart';
 import 'screens/auth/welcome_screen.dart';
 import 'screens/home_screen.dart';
+import 'services/supabase_service.dart';
 import 'theme/app_theme.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Set preferred orientations
@@ -22,6 +23,9 @@ void main() {
       statusBarIconBrightness: Brightness.light, // Light icons for dark bg
     ),
   );
+
+  // Initialize Supabase
+  await SupabaseService().initialize();
 
   runApp(const MyApp());
 }
