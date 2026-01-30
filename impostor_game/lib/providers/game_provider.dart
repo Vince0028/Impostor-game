@@ -183,7 +183,7 @@ class GameProvider extends ChangeNotifier {
 
     // Select random word from selected categories
     final allWords = _gameState.selectedCategories
-        .expand((c) => c.words)
+        .expand<TargetWord>((c) => c.words)
         .toList();
     final selectedWord = allWords[_random.nextInt(allWords.length)];
 
