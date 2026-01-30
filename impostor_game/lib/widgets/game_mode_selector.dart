@@ -18,7 +18,7 @@ class _GameModeSelectorState extends State<GameModeSelector> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SectionHeader(emoji: '🎮', title: 'GAME MODE'),
+          const SectionHeader(emoji: '🎮', title: 'MISSION TYPE'),
           const SizedBox(height: 16),
 
           // Mode Toggle
@@ -26,7 +26,7 @@ class _GameModeSelectorState extends State<GameModeSelector> {
             children: [
               Expanded(
                 child: _buildModeButton(
-                  title: 'Classic',
+                  title: 'FIELD OP',
                   icon: Icons.people,
                   isSelected: isClassicMode,
                   onTap: () => setState(() => isClassicMode = true),
@@ -35,7 +35,7 @@ class _GameModeSelectorState extends State<GameModeSelector> {
               const SizedBox(width: 12),
               Expanded(
                 child: _buildModeButton(
-                  title: 'Online',
+                  title: 'REMOTE',
                   icon: Icons.public,
                   isSelected: !isClassicMode,
                   onTap: () {
@@ -43,7 +43,7 @@ class _GameModeSelectorState extends State<GameModeSelector> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text(
-                          'Online mode coming soon! Use Classic mode.',
+                          'Remote uplink offline. Stick to field ops.',
                         ),
                         duration: Duration(seconds: 2),
                       ),
@@ -63,14 +63,15 @@ class _GameModeSelectorState extends State<GameModeSelector> {
                 style: AppTheme.bodyMedium,
                 children: [
                   TextSpan(
-                    text: 'Classic: ',
+                    text: 'FIELD OP: ',
                     style: AppTheme.bodyMedium.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: AppTheme.primaryNeon,
                     ),
                   ),
                   const TextSpan(
                     text:
-                        'Gather in the same room and pass the device between players.',
+                        'Physical gathering. Secure device transfer required between agents.',
                   ),
                 ],
               ),
@@ -81,13 +82,15 @@ class _GameModeSelectorState extends State<GameModeSelector> {
                 style: AppTheme.bodyMedium,
                 children: [
                   TextSpan(
-                    text: 'Online: ',
+                    text: 'REMOTE COMMS: ',
                     style: AppTheme.bodyMedium.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: AppTheme.textSecondary,
                     ),
                   ),
                   const TextSpan(
-                    text: 'Play in your group chat (WhatsApp, iMessage, etc.)',
+                    text:
+                        'Encrypted channel via external networks (Coming Soon).',
                   ),
                 ],
               ),
@@ -111,11 +114,20 @@ class _GameModeSelectorState extends State<GameModeSelector> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
         decoration: BoxDecoration(
-          color: isSelected ? AppTheme.textPrimary : Colors.transparent,
+          color: isSelected ? AppTheme.primaryNeon : Colors.transparent,
           borderRadius: BorderRadius.circular(30),
           border: Border.all(
-            color: isSelected ? AppTheme.textPrimary : AppTheme.divider,
+            color: isSelected ? AppTheme.primaryNeon : AppTheme.divider,
           ),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: AppTheme.primaryNeon.withOpacity(0.4),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : null,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -123,15 +135,16 @@ class _GameModeSelectorState extends State<GameModeSelector> {
             Icon(
               icon,
               size: 20,
-              color: isSelected ? Colors.white : AppTheme.textSecondary,
+              color: isSelected ? Colors.black : AppTheme.textSecondary,
             ),
             const SizedBox(width: 8),
             Text(
               title,
               style: TextStyle(
                 fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: isSelected ? Colors.white : AppTheme.textSecondary,
+                fontWeight: FontWeight.bold,
+                color: isSelected ? Colors.black : AppTheme.textSecondary,
+                letterSpacing: 1,
               ),
             ),
           ],

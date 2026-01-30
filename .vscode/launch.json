@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Incognito Game",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "cwd": "${workspaceFolder}/impostor_game",
+            "program": "lib/main.dart"
+        },
+        {
+            "name": "Incognito Game (Profile)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "cwd": "${workspaceFolder}/impostor_game",
+            "program": "lib/main.dart"
+        },
+        {
+            "name": "Incognito Game (Release)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "cwd": "${workspaceFolder}/impostor_game",
+            "program": "lib/main.dart"
+        }
+    ]
+}

@@ -186,6 +186,7 @@ class AppTheme {
     color: textPrimary,
     letterSpacing: -1.0,
     height: 1.1,
+    inherit: false,
   );
 
   static const TextStyle titleMedium = TextStyle(
@@ -193,12 +194,14 @@ class AppTheme {
     fontWeight: FontWeight.bold,
     color: textPrimary,
     letterSpacing: 0.5,
+    inherit: false,
   );
 
   static const TextStyle titleSmall = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w600,
     color: textPrimary,
+    inherit: false,
   );
 
   static const TextStyle bodyLarge = TextStyle(
@@ -206,6 +209,7 @@ class AppTheme {
     fontWeight: FontWeight.normal,
     color: textPrimary,
     height: 1.5,
+    inherit: false,
   );
 
   static const TextStyle bodyMedium = TextStyle(
@@ -213,12 +217,14 @@ class AppTheme {
     fontWeight: FontWeight.normal,
     color: textSecondary,
     height: 1.4,
+    inherit: false,
   );
 
   static const TextStyle bodySmall = TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.normal,
     color: textHint,
+    inherit: false,
   );
 
   static const TextStyle labelLarge = TextStyle(
@@ -226,5 +232,6 @@ class AppTheme {
     fontWeight: FontWeight.bold,
     color: primaryNeon,
     letterSpacing: 1.0,
+    inherit: false,
   );
 }
