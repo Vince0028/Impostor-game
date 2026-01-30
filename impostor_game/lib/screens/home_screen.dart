@@ -13,6 +13,7 @@ import '../widgets/support_section.dart';
 import '../dialogs/how_to_play_dialog.dart';
 import 'settings_screen.dart';
 import 'game_screen.dart';
+import '../utils/top_notification.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -177,23 +178,17 @@ class HomeScreen extends StatelessWidget {
 
     // Validate minimum players
     if (provider.players.length < 3) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Need at least 3 agents to start mission!'),
-          backgroundColor: AppTheme.alertColor,
-        ),
+      showTopNotification(
+        context,
+        'Need at least 3 agents to start mission!',
+        isError: true,
       );
       return;
     }
 
     // Validate categories
     if (provider.selectedCategories.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Select a mission category!'),
-          backgroundColor: AppTheme.alertColor,
-        ),
-      );
+      showTopNotification(context, 'Select a mission category!', isError: true);
       return;
     }
 

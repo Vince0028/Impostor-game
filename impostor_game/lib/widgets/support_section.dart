@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import '../theme/app_theme.dart';
+import '../utils/top_notification.dart';
 
 class SupportSection extends StatelessWidget {
   const SupportSection({super.key});
@@ -52,9 +53,7 @@ class SupportSection extends StatelessWidget {
           width: double.infinity,
           child: OutlinedButton.icon(
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Thank you for your support! ❤️')),
-              );
+              showTopNotification(context, 'Thank you for your support! ❤️');
             },
             style: OutlinedButton.styleFrom(
               foregroundColor: AppTheme.textPrimary,

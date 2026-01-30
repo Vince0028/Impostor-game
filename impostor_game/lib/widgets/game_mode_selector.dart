@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import 'section_card.dart';
+import '../utils/top_notification.dart';
 
 class GameModeSelector extends StatefulWidget {
   const GameModeSelector({super.key});
@@ -40,13 +41,10 @@ class _GameModeSelectorState extends State<GameModeSelector> {
                   isSelected: !isClassicMode,
                   onTap: () {
                     // Online mode not implemented
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Remote uplink offline. Stick to field ops.',
-                        ),
-                        duration: Duration(seconds: 2),
-                      ),
+                    showTopNotification(
+                      context,
+                      'Remote uplink offline. Stick to field ops.',
+                      isError: true,
                     );
                   },
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import '../theme/app_theme.dart';
+import '../utils/top_notification.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -33,12 +34,9 @@ class SettingsScreen extends StatelessWidget {
                 _buildSettingItem(
                   title: 'Change Language',
                   onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'English is the only mission language available',
-                        ),
-                      ),
+                    showTopNotification(
+                      context,
+                      'English is the only mission language available',
                     );
                   },
                 ),
