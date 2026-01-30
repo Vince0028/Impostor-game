@@ -255,7 +255,7 @@ class _PlayerCardState extends State<PlayerCard> with TickerProviderStateMixin {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        if (widget.hint != null) ...[
+                        if (widget.hint != null && widget.hint!.isNotEmpty) ...[
                           const SizedBox(height: 24),
                           Container(
                             padding: const EdgeInsets.symmetric(

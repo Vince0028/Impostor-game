@@ -191,6 +191,8 @@ class GameProvider extends ChangeNotifier {
     String? hint;
     if (_gameState.settings.imposterHintEnabled) {
       hint = selectedWord.hint;
+    } else {
+      hint = null; // Ensure hint is null if disabled
     }
 
     // Handle troll mode - sometimes make everyone an imposter
