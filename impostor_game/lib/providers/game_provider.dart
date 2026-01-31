@@ -20,9 +20,9 @@ class GameProvider extends ChangeNotifier {
   void _initializeGame() {
     _gameState = GameState(
       players: [
-        Player(id: '1', name: 'Player 1'),
-        Player(id: '2', name: 'Player 2'),
-        Player(id: '3', name: 'Player 3'),
+        Player(id: '1', name: 'Agent 1'),
+        Player(id: '2', name: 'Agent 2'),
+        Player(id: '3', name: 'Agent 3'),
       ],
       selectedCategories: [
         CategoriesData.allCategories[0], // Everyday Objects
@@ -39,7 +39,7 @@ class GameProvider extends ChangeNotifier {
 
     final newPlayer = Player(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
-      name: name.isEmpty ? 'Player ${_gameState.players.length + 1}' : name,
+      name: name.isEmpty ? 'Agent ${_gameState.players.length + 1}' : name,
     );
 
     final updatedPlayers = [..._gameState.players, newPlayer];
