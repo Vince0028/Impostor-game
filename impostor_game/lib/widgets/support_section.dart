@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import '../theme/app_theme.dart';
-import '../utils/top_notification.dart';
 
 class SupportSection extends StatelessWidget {
   const SupportSection({super.key});
@@ -42,30 +41,6 @@ class SupportSection extends StatelessWidget {
             icon: const Icon(Icons.share, size: 20),
             label: const Text(
               'SHARE WITH FRIENDS',
-              style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 0.5),
-            ),
-          ),
-        ),
-        const SizedBox(height: 12),
-
-        // Review Button
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: () {
-              showTopNotification(context, 'Thank you for your support! ❤️');
-            },
-            style: OutlinedButton.styleFrom(
-              foregroundColor: AppTheme.textPrimary,
-              side: const BorderSide(color: Color(0xFFFFD54F), width: 2),
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-            ),
-            icon: const Icon(Icons.star, size: 20),
-            label: const Text(
-              'WRITE A REVIEW',
               style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 0.5),
             ),
           ),
