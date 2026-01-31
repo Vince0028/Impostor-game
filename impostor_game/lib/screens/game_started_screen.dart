@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
 import '../providers/game_provider.dart';
+import '../models/game_state.dart';
 import '../theme/app_theme.dart';
 import 'reveal_screen.dart';
 import 'home_screen.dart';
@@ -16,11 +17,15 @@ class GameStartedScreen extends StatefulWidget {
 class _GameStartedScreenState extends State<GameStartedScreen> {
   Timer? _timer;
   int _remainingSeconds = 0;
+  late final Player _startingPlayer;
 
   @override
   void initState() {
     super.initState();
     final provider = context.read<GameProvider>();
+    // Select the starting player once when screen loads
+    _startingPlayer = provider.getStartingPlayer();
+
     if (provider.settings.timeLimitEnabled) {
       _remainingSeconds = provider.settings.timeLimitSeconds;
       _startTimer();
@@ -35,8 +40,57 @@ class _GameStartedScreenState extends State<GameStartedScreen> {
         });
       } else {
         _timer?.cancel();
+        if (mounted) {
+          _showTimeExpiredDialog();
+        }
       }
     });
+  }
+
+  void _showTimeExpiredDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.backgroundSurface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        title: Row(
+          children: [
+            const Icon(
+              Icons.timer_off_outlined,
+              color: AppTheme.alertColor,
+              size: 28,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'TIME EXPIRED',
+                style: AppTheme.titleMedium.copyWith(
+                  color: AppTheme.alertColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+        content: const Text(
+          'Interrogation window is closed.\n\nProceed to voting immediately.',
+          style: AppTheme.bodyLarge,
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _showReveal(context);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.alertColor,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('EXPOSE INCOGNITO'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -49,7 +103,7 @@ class _GameStartedScreenState extends State<GameStartedScreen> {
   Widget build(BuildContext context) {
     return Consumer<GameProvider>(
       builder: (context, provider, _) {
-        final startingPlayer = provider.getStartingPlayer();
+        final startingPlayer = _startingPlayer;
 
         return Scaffold(
           backgroundColor: AppTheme.backgroundDark,
