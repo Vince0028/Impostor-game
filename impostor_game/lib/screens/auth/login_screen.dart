@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/custom_text_field.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../services/supabase_service.dart';
 import '../../utils/top_notification.dart';
 import '../home_screen.dart';
@@ -49,11 +50,14 @@ class _LoginScreenState extends State<LoginScreen> {
         MaterialPageRoute(builder: (_) => const HomeScreen()),
         (route) => false,
       );
+    } on AuthException catch (e) {
+      if (!mounted) return;
+      showTopNotification(context, e.message, isError: true);
     } catch (e) {
       if (!mounted) return;
       showTopNotification(
         context,
-        'Access Denied: ${e.toString().replaceAll("Exception: ", "")}',
+        'Access Denied: Unexpected error occurred.',
         isError: true,
       );
     } finally {
@@ -114,11 +118,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     'Reset protocols sent to secure channel.',
                   );
                 }
+              } on AuthException catch (e) {
+                if (context.mounted) {
+                  showTopNotification(context, e.message, isError: true);
+                }
               } catch (e) {
                 if (context.mounted) {
                   showTopNotification(
                     context,
-                    'Failed to send reset protocols: ${e.toString()}',
+                    'Failed to send reset protocols.',
                     isError: true,
                   );
                 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/custom_text_field.dart';
 import '../../utils/top_notification.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../services/supabase_service.dart';
 
 class UpdateProfileDialog extends StatefulWidget {
@@ -44,11 +45,14 @@ class _UpdateProfileDialogState extends State<UpdateProfileDialog> {
 
       Navigator.pop(context);
       showTopNotification(context, 'Credentials updated successfully');
+    } on AuthException catch (e) {
+      if (!mounted) return;
+      showTopNotification(context, e.message, isError: true);
     } catch (e) {
       if (!mounted) return;
       showTopNotification(
         context,
-        'Update Failed: ${e.toString().replaceAll("Exception: ", "")}',
+        'Update Failed: Unexpected error.',
         isError: true,
       );
     } finally {

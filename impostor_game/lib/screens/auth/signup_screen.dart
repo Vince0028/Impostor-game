@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/custom_text_field.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../services/supabase_service.dart';
 import '../../utils/top_notification.dart';
 import 'login_screen.dart';
@@ -77,11 +78,14 @@ class _SignupScreenState extends State<SignupScreen> {
         context,
         MaterialPageRoute(builder: (_) => const LoginScreen()),
       );
+    } on AuthException catch (e) {
+      if (!mounted) return;
+      showTopNotification(context, e.message, isError: true);
     } catch (e) {
       if (!mounted) return;
       showTopNotification(
         context,
-        'Registration Failed: ${e.toString().replaceAll("Exception: ", "")}',
+        'Registration Failed: Unexpected error.',
         isError: true,
       );
     } finally {
