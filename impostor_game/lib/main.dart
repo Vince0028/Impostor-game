@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => GameProvider(),
       child: MaterialApp(
-        title: 'Incognito',
+        title: 'Project Incognito',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.darkTheme,
         home: const WelcomeScreen(),
