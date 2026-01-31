@@ -29,7 +29,15 @@ class TrollModeSection extends StatelessWidget {
                   const Spacer(),
                   Switch(
                     value: provider.settings.trollModeEnabled,
-                    onChanged: (_) => provider.toggleTrollMode(),
+                    onChanged: (value) {
+                      if (value) {
+                        _showWarningDialog(context, provider);
+                      } else {
+                        provider.toggleTrollMode();
+                      }
+                    },
+                    activeColor: AppTheme.alertColor,
+                    activeTrackColor: AppTheme.alertColor.withOpacity(0.3),
                   ),
                 ],
               ),
@@ -42,6 +50,71 @@ class TrollModeSection extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  void _showWarningDialog(BuildContext context, GameProvider provider) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.backgroundSurface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        title: Row(
+          children: [
+            const Icon(
+              Icons.warning_amber_rounded,
+              color: AppTheme.alertColor,
+              size: 28,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'SYSTEM WARNING',
+                style: AppTheme.titleMedium.copyWith(
+                  color: AppTheme.alertColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Enabling GLITCH MODE introduces system instability.',
+              style: AppTheme.bodyLarge.copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'There is a 20% probability that critical failure occurs, designating ALL AGENTS as Imposters.',
+              style: AppTheme.bodyMedium,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Proceed with caution.',
+              style: AppTheme.bodyMedium.copyWith(color: AppTheme.textHint),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('ABORT'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              provider.toggleTrollMode();
+              Navigator.pop(context);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.alertColor,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('INITIALIZE'),
+          ),
+        ],
+      ),
     );
   }
 }
