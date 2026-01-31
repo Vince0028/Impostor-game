@@ -36,6 +36,7 @@ class SupabaseService {
       email: email,
       password: password,
       data: {'username': username},
+      emailRedirectTo: 'io.supabase.impostorgame://login-callback',
     );
   }
 
