@@ -78,9 +78,9 @@ class _PlayerCardState extends State<PlayerCard> with TickerProviderStateMixin {
         : widget.cardColor;
 
     return GestureDetector(
-      onLongPressStart: (_) => _onHoldStart(),
-      onLongPressEnd: (_) => _onHoldEnd(),
-      onLongPressCancel: () => _onHoldEnd(),
+      onTapDown: (_) => _onHoldStart(),
+      onTapUp: (_) => _onHoldEnd(),
+      onTapCancel: () => _onHoldEnd(),
       child: AnimatedBuilder(
         animation: Listenable.merge([_scaleAnimation, _flipAnimation]),
         builder: (context, child) {
@@ -147,7 +147,7 @@ class _PlayerCardState extends State<PlayerCard> with TickerProviderStateMixin {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Text(
-              'Keep your identity secret.\nHold to reveal.',
+              'Keep your identity secret.\nTouch & Hold to reveal.',
               style: AppTheme.bodyMedium.copyWith(
                 color: AppTheme.textPrimary.withOpacity(0.8),
                 height: 1.5,
@@ -323,14 +323,8 @@ class _PlayerCardState extends State<PlayerCard> with TickerProviderStateMixin {
       _isHolding = true;
     });
     _scaleController.forward();
-
-    // Reveal after 500ms of holding
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (_isHolding && mounted) {
-        _flipController.forward();
-        widget.onCardRevealed();
-      }
-    });
+    _flipController.forward();
+    widget.onCardRevealed();
   }
 
   void _onHoldEnd() {
