@@ -55,11 +55,12 @@ class _LoginScreenState extends State<LoginScreen> {
       showTopNotification(context, e.message, isError: true);
     } catch (e) {
       if (!mounted) return;
-      showTopNotification(
-        context,
-        'Access Denied: Unexpected error occurred.',
-        isError: true,
-      );
+      final message =
+          e.toString().contains('SocketException') ||
+              e.toString().contains('ClientException')
+          ? 'Secure Connection Failed: No Internet'
+          : 'Access Denied: Unexpected error.';
+      showTopNotification(context, message, isError: true);
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -124,11 +125,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 }
               } catch (e) {
                 if (context.mounted) {
-                  showTopNotification(
-                    context,
-                    'Failed to send reset protocols.',
-                    isError: true,
-                  );
+                  final message =
+                      e.toString().contains('SocketException') ||
+                          e.toString().contains('ClientException')
+                      ? 'Connection Failed: No Internet'
+                      : 'Failed to send reset protocols.';
+                  showTopNotification(context, message, isError: true);
                 }
               }
             },

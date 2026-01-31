@@ -83,11 +83,12 @@ class _SignupScreenState extends State<SignupScreen> {
       showTopNotification(context, e.message, isError: true);
     } catch (e) {
       if (!mounted) return;
-      showTopNotification(
-        context,
-        'Registration Failed: Unexpected error.',
-        isError: true,
-      );
+      final message =
+          e.toString().contains('SocketException') ||
+              e.toString().contains('ClientException')
+          ? 'Connection Failed: No Internet Link'
+          : 'Registration Failed: Unexpected error.';
+      showTopNotification(context, message, isError: true);
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
