@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 import 'login_screen.dart';
 import 'signup_screen.dart';
+import '../home_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -78,15 +79,20 @@ class WelcomeScreen extends StatelessWidget {
                 ),
                 isPrimary: false,
               ),
+              const SizedBox(height: 16),
+              _buildAuthButton(
+                context,
+                title: 'OFFLINE ACCESS',
+                subtitle: 'Play Without Account',
+                icon: Icons.wifi_off_rounded,
+                onTap: () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => const HomeScreen()),
+                ),
+                isPrimary: false,
+              ),
 
               const Spacer(),
-              Text(
-                'SECURE CONNECTION REQUIRED',
-                style: AppTheme.bodySmall.copyWith(
-                  letterSpacing: 2,
-                  color: AppTheme.textHint.withOpacity(0.5),
-                ),
-              ),
               const SizedBox(height: 16),
             ],
           ),

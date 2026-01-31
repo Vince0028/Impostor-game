@@ -13,6 +13,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = SupabaseService().client.auth.currentUser;
     return Scaffold(
       backgroundColor: AppTheme.backgroundDark,
       appBar: AppBar(
@@ -50,14 +51,16 @@ class SettingsScreen extends StatelessWidget {
                   title: 'Recruit Agents',
                   onTap: () => _shareApp(),
                 ),
-                _buildDivider(),
-                _buildSettingItem(
-                  title: 'Update Credentials',
-                  onTap: () => showDialog(
-                    context: context,
-                    builder: (context) => const UpdateProfileDialog(),
+                if (currentUser != null) ...[
+                  _buildDivider(),
+                  _buildSettingItem(
+                    title: 'Update Credentials',
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (context) => const UpdateProfileDialog(),
+                    ),
                   ),
-                ),
+                ],
               ],
             ),
 
@@ -78,36 +81,36 @@ class SettingsScreen extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 24),
-
-            // Review Button
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => const WriteReviewDialog(),
-                  );
-                },
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: const Color(0xFFFFD700),
-                  side: const BorderSide(color: Color(0xFFFFD700), width: 2),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+            if (currentUser != null) ...[
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => const WriteReviewDialog(),
+                    );
+                  },
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: const Color(0xFFFFD700),
+                    side: const BorderSide(color: Color(0xFFFFD700), width: 2),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
                   ),
-                ),
-                icon: const Icon(Icons.star),
-                label: const Text(
-                  'WRITE A REVIEW',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
+                  icon: const Icon(Icons.star),
+                  label: const Text(
+                    'WRITE A REVIEW',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
 
             const SizedBox(height: 24),
 
