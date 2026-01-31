@@ -6,6 +6,8 @@ import '../dialogs/update_profile_dialog.dart';
 import '../services/supabase_service.dart';
 import 'auth/welcome_screen.dart';
 
+import '../dialogs/write_review_dialog.dart';
+
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
@@ -78,6 +80,37 @@ class SettingsScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
+            // Review Button
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => const WriteReviewDialog(),
+                  );
+                },
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: const Color(0xFFFFD700),
+                  side: const BorderSide(color: Color(0xFFFFD700), width: 2),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                icon: const Icon(Icons.star),
+                label: const Text(
+                  'WRITE A REVIEW',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
+                  ),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
             // Logout Button
             SizedBox(
               width: double.infinity,
@@ -113,7 +146,10 @@ class SettingsScreen extends StatelessWidget {
             const SizedBox(height: 32),
 
             // Footer
-            Text('Support: support@incognito.game', style: AppTheme.bodyMedium),
+            Text(
+              'Support: vincenelmaralobin@gmail.com',
+              style: AppTheme.bodyMedium,
+            ),
             const SizedBox(height: 4),
             Text('v1.0.0', style: AppTheme.bodySmall),
           ],
