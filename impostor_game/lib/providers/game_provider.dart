@@ -203,8 +203,10 @@ class GameProvider extends ChangeNotifier {
       }
     }
 
-    _gameState = _gameState.copyWith(
+    _gameState = GameState(
       players: resetPlayers,
+      selectedCategories: _gameState.selectedCategories,
+      settings: _gameState.settings,
       currentWord: selectedWord.text,
       currentHint: hint,
       currentPlayerIndex: 0,
@@ -267,7 +269,10 @@ class GameProvider extends ChangeNotifier {
   }
 
   void resetGame() {
-    _gameState = _gameState.copyWith(
+    _gameState = GameState(
+      players: _gameState.players,
+      selectedCategories: _gameState.selectedCategories,
+      settings: _gameState.settings,
       currentWord: null,
       currentHint: null,
       currentPlayerIndex: 0,
