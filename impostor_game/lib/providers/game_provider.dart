@@ -101,10 +101,19 @@ class GameProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void selectRandomCategory() {
+  void selectRandomCategories(int count) {
     if (allCategories.isEmpty) return;
-    final randomCategory = allCategories[_random.nextInt(allCategories.length)];
-    _gameState = _gameState.copyWith(selectedCategories: [randomCategory]);
+
+    // Create a copy of all categories to shuffle
+    final available = [...allCategories];
+    available.shuffle(_random);
+
+    // Select the requested number of categories
+    final selected = available
+        .take(count.clamp(1, allCategories.length))
+        .toList();
+
+    _gameState = _gameState.copyWith(selectedCategories: selected);
     notifyListeners();
   }
 

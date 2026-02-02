@@ -66,7 +66,8 @@ class SelectCategoriesDialog extends StatelessWidget {
                   children: [
                     Expanded(
                       child: OutlinedButton.icon(
-                        onPressed: () => provider.selectRandomCategory(),
+                        onPressed: () =>
+                            _showRandomCountDialog(context, provider),
                         icon: const Icon(Icons.shuffle),
                         label: const Text('RANDOM'),
                         style: OutlinedButton.styleFrom(
@@ -209,6 +210,67 @@ class SelectCategoriesDialog extends StatelessWidget {
               ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showRandomCountDialog(BuildContext context, GameProvider provider) {
+    final controller = TextEditingController(text: '1');
+    final max = provider.allCategories.length;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.backgroundSurface,
+        title: Text(
+          'RANDOMIZE INTEL',
+          style: AppTheme.titleMedium.copyWith(color: AppTheme.primaryNeon),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'How many categories to authorize? (1-$max)',
+              style: AppTheme.bodyMedium,
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: controller,
+              keyboardType: TextInputType.number,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.black26,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: AppTheme.primaryNeon),
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('CANCEL'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final count = int.tryParse(controller.text) ?? 1;
+              provider.selectRandomCategories(count);
+              Navigator.pop(context);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.primaryNeon,
+              foregroundColor: Colors.black,
+            ),
+            child: const Text('RANDOMIZE'),
+          ),
+        ],
       ),
     );
   }
