@@ -114,6 +114,12 @@ class GameProvider extends ChangeNotifier {
         .toList();
 
     _gameState = _gameState.copyWith(selectedCategories: selected);
+    _gameState = _gameState.copyWith(selectedCategories: selected);
+    notifyListeners();
+  }
+
+  void deselectAllCategories() {
+    _gameState = _gameState.copyWith(selectedCategories: []);
     notifyListeners();
   }
 

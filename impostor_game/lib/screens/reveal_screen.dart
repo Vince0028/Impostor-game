@@ -91,6 +91,41 @@ class RevealScreen extends StatelessWidget {
                   ),
                 ),
 
+                if (provider.gameState.settings.imposterHintEnabled &&
+                    provider.gameState.currentHint != null) ...[
+                  const SizedBox(height: 16),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 24),
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: AppTheme.secondaryNeon.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: AppTheme.secondaryNeon),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          'CLASSIFIED INTEL',
+                          style: AppTheme.labelLarge.copyWith(
+                            letterSpacing: 2,
+                            color: AppTheme.secondaryNeon,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          provider.gameState.currentHint!,
+                          style: AppTheme.titleMedium.copyWith(
+                            fontSize: 24,
+                            color: Colors.white,
+                            letterSpacing: 1,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+
                 const Spacer(),
 
                 // New Game Button

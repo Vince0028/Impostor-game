@@ -77,13 +77,35 @@ class SelectCategoriesDialog extends StatelessWidget {
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: () => provider.selectAllCategories(),
-                        icon: const Icon(Icons.check_box_outlined),
-                        label: const Text('ALL INTEL'),
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                        ),
+                      child: Builder(
+                        builder: (context) {
+                          final isAllSelected =
+                              provider.selectedCategories.length ==
+                              provider.allCategories.length;
+
+                          return OutlinedButton.icon(
+                            onPressed: () => isAllSelected
+                                ? provider.deselectAllCategories()
+                                : provider.selectAllCategories(),
+                            icon: Icon(
+                              isAllSelected
+                                  ? Icons.check_box
+                                  : Icons.check_box_outline_blank,
+                            ),
+                            label: const Text('ALL INTEL'),
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              foregroundColor: isAllSelected
+                                  ? AppTheme.primaryNeon
+                                  : null,
+                              side: isAllSelected
+                                  ? const BorderSide(
+                                      color: AppTheme.primaryNeon,
+                                    )
+                                  : null,
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],
