@@ -160,8 +160,26 @@ class GameProvider extends ChangeNotifier {
   }
 
   void toggleTrollMode() {
+    final isTrollMode = (settings.trollModeEnabled as dynamic) ?? false;
+    final isPeaceMode = (settings.allInnocentEnabled as dynamic) ?? false;
+
     final updatedSettings = _gameState.settings.copyWith(
-      trollModeEnabled: !_gameState.settings.trollModeEnabled,
+      trollModeEnabled: !isTrollMode,
+      // Disable all innocent mode if enabling troll mode
+      allInnocentEnabled: !isTrollMode ? false : isPeaceMode,
+    );
+    _gameState = _gameState.copyWith(settings: updatedSettings);
+    notifyListeners();
+  }
+
+  void toggleAllInnocent() {
+    final isTrollMode = (settings.trollModeEnabled as dynamic) ?? false;
+    final isPeaceMode = (settings.allInnocentEnabled as dynamic) ?? false;
+
+    final updatedSettings = _gameState.settings.copyWith(
+      allInnocentEnabled: !isPeaceMode,
+      // Disable troll mode if enabling all innocent mode
+      trollModeEnabled: !isPeaceMode ? false : isTrollMode,
     );
     _gameState = _gameState.copyWith(settings: updatedSettings);
     notifyListeners();
@@ -196,10 +214,12 @@ class GameProvider extends ChangeNotifier {
 
     // Select random imposters
     final imposterIndices = <int>[];
-    while (imposterIndices.length < _gameState.settings.imposterCount) {
-      final randomIndex = _random.nextInt(resetPlayers.length);
-      if (!imposterIndices.contains(randomIndex)) {
-        imposterIndices.add(randomIndex);
+    if (!_gameState.settings.allInnocentEnabled) {
+      while (imposterIndices.length < _gameState.settings.imposterCount) {
+        final randomIndex = _random.nextInt(resetPlayers.length);
+        if (!imposterIndices.contains(randomIndex)) {
+          imposterIndices.add(randomIndex);
+        }
       }
     }
 

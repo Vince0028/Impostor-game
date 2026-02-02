@@ -8,6 +8,7 @@ import '../widgets/categories_section.dart';
 import '../widgets/imposters_section.dart';
 import '../widgets/time_limit_section.dart';
 import '../widgets/imposter_hint_section.dart';
+import '../widgets/peace_mode_section.dart';
 import '../widgets/troll_mode_section.dart';
 import '../widgets/support_section.dart';
 import '../dialogs/how_to_play_dialog.dart';
@@ -62,6 +63,10 @@ class HomeScreen extends StatelessWidget {
 
                     // Troll Mode
                     const TrollModeSection(),
+                    const SizedBox(height: 16),
+
+                    // Peace Mode
+                    const PeaceModeSection(),
                     const SizedBox(height: 16),
 
                     // Support Section

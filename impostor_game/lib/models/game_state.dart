@@ -57,6 +57,7 @@ class GameSettings {
   int timeLimitSeconds;
   bool imposterHintEnabled;
   bool trollModeEnabled;
+  bool allInnocentEnabled;
 
   GameSettings({
     this.imposterCount = 1,
@@ -64,6 +65,7 @@ class GameSettings {
     this.timeLimitSeconds = 60,
     this.imposterHintEnabled = false,
     this.trollModeEnabled = false,
+    this.allInnocentEnabled = false,
   });
 
   GameSettings copyWith({
@@ -72,6 +74,7 @@ class GameSettings {
     int? timeLimitSeconds,
     bool? imposterHintEnabled,
     bool? trollModeEnabled,
+    bool? allInnocentEnabled,
   }) {
     return GameSettings(
       imposterCount: imposterCount ?? this.imposterCount,
@@ -79,6 +82,7 @@ class GameSettings {
       timeLimitSeconds: timeLimitSeconds ?? this.timeLimitSeconds,
       imposterHintEnabled: imposterHintEnabled ?? this.imposterHintEnabled,
       trollModeEnabled: trollModeEnabled ?? this.trollModeEnabled,
+      allInnocentEnabled: allInnocentEnabled ?? this.allInnocentEnabled,
     );
   }
 }
