@@ -4,6 +4,7 @@ import '../../widgets/custom_text_field.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../services/supabase_service.dart';
 import '../../utils/top_notification.dart';
+import '../../widgets/no_internet_dialog.dart';
 import '../home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -52,15 +53,27 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     } on AuthException catch (e) {
       if (!mounted) return;
-      showTopNotification(context, e.message, isError: true);
+      if (e.message.contains('SocketException') ||
+          e.message.contains('ClientException') ||
+          e.message.contains('Failed host lookup')) {
+        NoInternetDialog.show(context);
+      } else {
+        showTopNotification(context, e.message, isError: true);
+      }
     } catch (e) {
       if (!mounted) return;
-      final message =
-          e.toString().contains('SocketException') ||
-              e.toString().contains('ClientException')
-          ? 'Secure Connection Failed: No Internet'
-          : 'Access Denied: Unexpected error.';
-      showTopNotification(context, message, isError: true);
+
+      if (e.toString().contains('SocketException') ||
+          e.toString().contains('ClientException') ||
+          e.toString().contains('Failed host lookup')) {
+        NoInternetDialog.show(context);
+      } else {
+        showTopNotification(
+          context,
+          'Access Denied: Unexpected error.',
+          isError: true,
+        );
+      }
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -121,16 +134,27 @@ class _LoginScreenState extends State<LoginScreen> {
                 }
               } on AuthException catch (e) {
                 if (context.mounted) {
-                  showTopNotification(context, e.message, isError: true);
+                  if (e.message.contains('SocketException') ||
+                      e.message.contains('ClientException') ||
+                      e.message.contains('Failed host lookup')) {
+                    NoInternetDialog.show(context);
+                  } else {
+                    showTopNotification(context, e.message, isError: true);
+                  }
                 }
               } catch (e) {
                 if (context.mounted) {
-                  final message =
-                      e.toString().contains('SocketException') ||
-                          e.toString().contains('ClientException')
-                      ? 'Connection Failed: No Internet'
-                      : 'Failed to send reset protocols.';
-                  showTopNotification(context, message, isError: true);
+                  if (e.toString().contains('SocketException') ||
+                      e.toString().contains('ClientException') ||
+                      e.toString().contains('Failed host lookup')) {
+                    NoInternetDialog.show(context);
+                  } else {
+                    showTopNotification(
+                      context,
+                      'Failed to send reset protocols.',
+                      isError: true,
+                    );
+                  }
                 }
               }
             },
