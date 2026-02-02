@@ -96,6 +96,18 @@ class GameProvider extends ChangeNotifier {
     return _gameState.selectedCategories.any((c) => c.id == category.id);
   }
 
+  void selectAllCategories() {
+    _gameState = _gameState.copyWith(selectedCategories: [...allCategories]);
+    notifyListeners();
+  }
+
+  void selectRandomCategory() {
+    if (allCategories.isEmpty) return;
+    final randomCategory = allCategories[_random.nextInt(allCategories.length)];
+    _gameState = _gameState.copyWith(selectedCategories: [randomCategory]);
+    notifyListeners();
+  }
+
   // Settings Management
   void updateImposterCount(int count) {
     final maxImposters = _getMaxImposters();

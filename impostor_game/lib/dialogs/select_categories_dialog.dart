@@ -56,6 +56,39 @@ class SelectCategoriesDialog extends StatelessWidget {
                 ),
               ),
 
+              // Quick Actions
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 8,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () => provider.selectRandomCategory(),
+                        icon: const Icon(Icons.shuffle),
+                        label: const Text('RANDOM'),
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () => provider.selectAllCategories(),
+                        icon: const Icon(Icons.check_box_outlined),
+                        label: const Text('ALL INTEL'),
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
               // Categories List
               Expanded(
                 child: ListView.builder(
